@@ -47,7 +47,6 @@ public class Janela extends JFrame
         cntForm.setBackground(Color.DARK_GRAY);
 
         this.addWindowListener(new FechamentoDeJanela());
-        this.addWindowListener(new Movimentacao());
         this.setSize(700, 700);
         this.setVisible(true);
         this.setResizable(false);
