@@ -4,7 +4,7 @@
 
 
 Cliente (comecado)
-TratadoraDeMovimentacao (THREAD)
+Tratadora (THREAD)
 TratadoraDeComunicadoDeDesligamento 1 (THREAD)
 TratadoraDeVitoria (THREAD)
 ComunicadoDeMovimentacao
