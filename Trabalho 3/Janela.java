@@ -58,25 +58,3 @@ public class Janela extends JFrame
         }
     }
 }
-
-//     public void rotateIcon(int angle)
-// {
-//         int w = theLabel.getIcon().getIconWidth();
-//         int h = theLabel.getIcon().getIconHeight();
-//         int type = BufferedImage.TYPE_INT_RGB;  // other options, see api
-
-//         BufferedImage DaImage = new BufferedImage(h, w, type);
-//         Graphics2D g2 = DaImage.createGraphics();
-
-//         double x = (h - w)/2.0;
-//         double y = (w - h)/2.0;
-//         AffineTransform at = AffineTransform.getTranslateInstance(x, y);
-
-//         at.rotate(Math.toRadians(angle), w/2.0, h/2.0);
-//         g2.drawImage(new ImageIcon(getData()).getImage(), at, theLabel);
-//         g2.dispose();
-
-//         theLabel.setIcon(new ImageIcon(DaImage));
-//         this.setSize(DaImage.getWidth(),DaImage.getHeight()); //resize the frame
-// }
-// }
