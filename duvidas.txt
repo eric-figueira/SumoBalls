@@ -1,0 +1,14 @@
+1. o run de uma thread é infinito ?
+
+2. try
+{
+    transmissor.close();
+}
+catch (Exception falha)
+{} // so tentando fechar antes de acabar a thread
+
+return;
+
+para que serve isso?
+
+3. como você pede para o cliente enviar (parceiro.envie()), se no servidor você não fica espiando? você "força" ele a fazer isso?

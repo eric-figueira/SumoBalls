@@ -26,5 +26,31 @@ public class AceitadoraDeConexao extends Thread
         this.usuarios = usuarios;
     }
 
-    
+    public void run () 
+    {
+        for (;;) 
+        {
+            Socket conexao = null;
+
+            try 
+            {
+                conexao = this.pedido.accept();
+            }
+            catch (Exception erro) 
+            {
+                continue;
+            }
+
+            SupervisoraDeConexao supervisoraDeConexao = null;
+
+            try 
+            {
+                supervisoraDeConexao = new SupervisoraDeConexao (conexao, usuarios);
+            }
+            catch (Exception erro) 
+            {}
+
+            supervisoraDeConexao.start();
+        }
+    }
 }

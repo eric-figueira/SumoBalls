@@ -33,7 +33,7 @@ public class Parceiro
             transmissor.writeObject(x);
             transmissor.flush();
         }
-        catch (IOException erro) { throw new IOException("Erro na transmissao"); }
+        catch (IOException erro) { throw new IOException("Erro na transmissãoo!"); }
     }
 
 
@@ -48,7 +48,7 @@ public class Parceiro
 
             return this.proximoComunicado;
         }
-        catch (Exception erro) { throw new Exception("Erro na espionagem"); }
+        catch (Exception erro) { throw new Exception("Erro na espionagem!"); }
     }
 
 
@@ -63,7 +63,7 @@ public class Parceiro
             this.proximoComunicado = null;
             return ret;
         }
-        catch (Exception erro) { throw new Exception("Erro de recepcao"); }
+        catch (Exception erro) { throw new Exception("Erro de recepcão!"); }
     }
 
 
