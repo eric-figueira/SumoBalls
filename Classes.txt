@@ -5,7 +5,6 @@
 
 Cliente (comecado)
 Tratadora (THREAD)
-TratadoraDeComunicadoDeDesligamento 1 (THREAD)
 TratadoraDeVitoria (THREAD)
 ComunicadoDeMovimentacao
 ComunicadoDeAtaque
@@ -13,6 +12,7 @@ ComunicadoDeDesistencia
 SupervisoraDeConexao (comecado)
 
 
+TratadoraDeComunicadoDeDesligamento 1 (THREAD) (feito)
 Parceiro 1 (feito)
 PedidoDeMovimentacao (feito?)
 PedidoDeAtaque  (feito?)
