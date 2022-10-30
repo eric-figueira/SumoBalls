@@ -3,24 +3,23 @@
 1 => só recodar
 
 
-Cliente 1 (comecado)
+Cliente (comecado)
 TratadoraDeMovimentacao (THREAD)
 TratadoraDeComunicadoDeDesligamento 1 (THREAD)
 TratadoraDeVitoria (THREAD)
 ComunicadoDeMovimentacao
 ComunicadoDeAtaque
 ComunicadoDeDesistencia
-AceitadoraDeConexao 1
-SupervisoraDeConexao 1 
-Servidor 1
-
+SupervisoraDeConexao (comecado)
 
 
 Parceiro 1 (feito)
-PedidoDeMovimentacao (feito)
+PedidoDeMovimentacao (feito?)
 PedidoDeAtaque  (feito?)
 Comunicado * (feito)
 ComunicadoDeDesligamento * (feito)
 ComunicadoDeVitoria * (feito)
 ComunicadoParaReiniciar * (feito)
 PedidoParaSair * (feito)
+Servidor (feito)
+AceitadoraDeConexao (feito)
