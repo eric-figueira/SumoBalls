@@ -57,6 +57,7 @@ public class Janela extends JFrame
             System.exit(0);
         }
     }
+}
 
 //     public void rotateIcon(int angle)
 // {
