@@ -3,19 +3,21 @@
 1 => só recodar
 
 
+
+
 Cliente (comecado)
 Tratadora (THREAD)
 TratadoraDeVitoria (THREAD)
-ComunicadoDeMovimentacao
-ComunicadoDeAtaque
 ComunicadoDeDesistencia
 SupervisoraDeConexao (comecado)
 
 
+
+Rotacao (feito)
 TratadoraDeComunicadoDeDesligamento 1 (THREAD) (feito)
 Parceiro 1 (feito)
-PedidoDeMovimentacao (feito?)
-PedidoDeAtaque  (feito?)
+Movimentacao (feito)
+Ataque (feito)
 Comunicado * (feito)
 ComunicadoDeDesligamento * (feito)
 ComunicadoDeVitoria * (feito)

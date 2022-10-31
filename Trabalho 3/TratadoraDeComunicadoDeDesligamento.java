@@ -1,5 +1,6 @@
 import java.net.*;
 
+
 public class TratadoraDeComunicadoDeDesligamento extends Thread
 {
     private Parceiro servidor;
@@ -20,7 +21,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
             {
                 if (this.servidor.espie() instanceof ComunicadoDeDesligamento)
                 {
-                    Cliente.Janela.MostrarMensagemDeErro("VAI DAR MERDA");
+                    Cliente1.Janela.MostrarMensagemDeErro("VAI DAR MERDA");
                 }
             }
             catch (Exception erro)

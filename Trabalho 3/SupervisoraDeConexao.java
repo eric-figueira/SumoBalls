@@ -72,16 +72,20 @@ public class SupervisoraDeConexao extends Thread
                 if (comunicado==null)
                     return;
 
-                if (comunicado instanceof PedidoDeAtaque)
+                if (comunicado instanceof Ataque)
                 {
 
                 }
-
-                else if (comunicado instanceof PedidoDeMovimentacao) 
+                else if (comunicado instanceof Movimentacao) 
+                {
+                    Movimentacao  mov = (Movimentacao) usuario.envie();
+                    for (Parceiro parceiro : usuarios)
+                        parceiro.receba(mov);
+                }
+                else if (comunicado instanceof Rotacao) 
                 {
 
                 }
-
                 else if (comunicado instanceof PedidoParaSair) 
                 {
                     synchronized (usuarios) 

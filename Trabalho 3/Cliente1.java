@@ -6,10 +6,24 @@ import javax.swing.*;
 import java.util.*;
 import javax.swing.*;
 
-public class Cliente 
+public class Cliente1 
 {
     public static final String HOST_PADRAO = "localhost";
     public static final int PORTA_PADRAO = 3000;
+    private static Parceiro servidor = null; 
+
+    private static JLabel player1 = null;
+    private static JLabel player2 = null;
+
+    private static int player1x = 200;
+    private static int player1y = 200;
+
+
+    private static int player2x = 425;
+    private static int player2y = 425;
+
+    private static final int ESCALA_MOVIMENTACAO = 10;
+
     public static void main (String args[])
     {
         if (args.length > 2)
@@ -20,12 +34,12 @@ public class Cliente
 
         Socket conexao = null;
         ObjectOutputStream transmissor = null;
-        ObjectInputStream receptor = null;
-        Parceiro servidor = null;
+        ObjectInputStream receptor = null;  
+       
         try
         {
-            String host = Cliente.HOST_PADRAO;
-            int   porta = Cliente.PORTA_PADRAO;
+            String host = Cliente1.HOST_PADRAO;
+            int   porta = Cliente1.PORTA_PADRAO;
 
             if (args.length > 0)
                 host = args[0];
@@ -54,21 +68,44 @@ public class Cliente
         new Janela();
     }
 
+    public static void mandarMovimentacoes(char playerMovimentante, char direcaoMovimento)
+    {
+        try { servidor.receba(new Movimentacao(playerMovimentante, direcaoMovimento)); }
+        catch (Exception erro) {};
+    }
+
+    public static void realizarMovimentacoes(char playerMovimentante, char direcaoMovimento)
+    {
+        if (direcaoMovimento == 'N')
+        {
+            if (playerMovimentante == 'A') player1y -= ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') player2y -= ESCALA_MOVIMENTACAO;
+        }
+        else if (direcaoMovimento == 'O')
+        {
+            if (playerMovimentante == 'A') player1x -= ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') player2x -= ESCALA_MOVIMENTACAO;
+        }
+        else if (direcaoMovimento == 'S')
+        {
+            if (playerMovimentante == 'A') player1y += ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') player2y += ESCALA_MOVIMENTACAO;
+        }
+        else if (direcaoMovimento == 'L')
+        {
+            if (playerMovimentante == 'A') player1x += ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') player2x += ESCALA_MOVIMENTACAO;
+        }
+
+        Janela.AtualizarTela();
+    }
+
     public static class Janela extends JFrame
     {   
         protected JLayeredPane fundo;
 
         static Container cntForm = null;
-        static JLabel player1 = null;
-        static JLabel player2 = null;
-
-        static int player1x = 200;
-        static int player1y = 200;
-
-
-        static int player2x = 425;
-        static int player2y = 425;
-
+        
 
         public Janela () 
         {
@@ -89,12 +126,12 @@ public class Cliente
             
             ImageIcon imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1.png"));
             player1 = new JLabel(imgPlayer1);
-            player1.setBounds(Janela.player1x, Janela.player1y, 75, 75);
+            player1.setBounds(player1x, player1y, 75, 75);
 
             
             ImageIcon imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2.png"));
             player2 = new JLabel(imgPlayer2);
-            player2.setBounds(Janela.player2x, Janela.player2y, 75, 75);
+            player2.setBounds(player2x, player2y, 75, 75);
 
             this.fundo = new JLayeredPane();
             this.fundo.setSize(600, 600);
@@ -112,6 +149,22 @@ public class Cliente
             this.setSize(700, 700);
             this.setVisible(true);
             this.setResizable(false);
+        }
+
+        public static void AtualizarTela()
+        {
+            player1.setBounds(player1x, player1y, 75, 75);
+            player2.setBounds(player2x, player2y, 75, 75);
+
+            try
+            {
+                if (player1x <= 75 || player1x >= 550 || player1y >= 550 || player1y <= 75)
+                    servidor.receba(new ComunicadoDeVitoria('L'));
+            }
+            catch (Exception erro)
+            {
+                MostrarMensagemDeErro(erro.getMessage());
+            }
         }
 
         public static void MostrarMensagemDeErro(String erroRecebido)
@@ -135,24 +188,10 @@ public class Cliente
         
             public void keyPressed(KeyEvent e) 
             {
-                if (e.getKeyCode() == KeyEvent.VK_W) 
-                {
-                    Janela.player1y -= 30;
-                }
-                else if (e.getKeyCode() == KeyEvent.VK_A)
-                {
-                    Janela.player1x -= 30;
-                }
-                else if (e.getKeyCode() == KeyEvent.VK_S)
-                {
-                    Janela.player1y += 30;
-                }
-                else if (e.getKeyCode() == KeyEvent.VK_D)
-                {
-                    Janela.player1x += 30;
-                }
-
-                Janela.player1.setBounds(Janela.player1x, Janela.player1y, 75, 75);
+                if (e.getKeyCode() == KeyEvent.VK_W) { Cliente1.mandarMovimentacoes('A', 'N'); }
+                else if (e.getKeyCode() == KeyEvent.VK_A) { Cliente1.mandarMovimentacoes('A', 'O'); }
+                else if (e.getKeyCode() == KeyEvent.VK_S) { Cliente1.mandarMovimentacoes('A', 'S'); }
+                else if (e.getKeyCode() == KeyEvent.VK_D) { Cliente1.mandarMovimentacoes('A', 'L'); }
             }
         
             public void keyReleased(KeyEvent e) 

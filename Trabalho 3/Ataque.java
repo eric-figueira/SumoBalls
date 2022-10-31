@@ -1,11 +1,11 @@
 
 
-public class PedidoDeAtaque extends Comunicado
+public class Ataque extends Comunicado
 {
     private char playerAtacante,
                  direcaoDoAtaque;
 
-    public PedidoDeAtaque(char playerAtacante, char direcaoDoAtaque) 
+    public Ataque(char playerAtacante, char direcaoDoAtaque) 
     {
         this.playerAtacante = playerAtacante;
         this.direcaoDoAtaque = direcaoDoAtaque;
