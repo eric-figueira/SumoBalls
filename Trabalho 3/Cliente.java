@@ -6,22 +6,26 @@ import javax.swing.*;
 import java.util.*;
 import javax.swing.*;
 
-public class Cliente1 
+public class Cliente
 {
+    // Parte do Socket
     public static final String HOST_PADRAO = "localhost";
     public static final int PORTA_PADRAO = 3000;
     private static Parceiro servidor = null; 
 
+    // Criacao dos jogadores
     private static JLabel player1 = null;
     private static JLabel player2 = null;
 
+    // Posicoes iniciais jogador 1
     private static int player1x = 200;
     private static int player1y = 200;
 
-
+    // Posicoes iniciais jogador 2
     private static int player2x = 425;
     private static int player2y = 425;
 
+    // Quando os jogadores vao se mexer
     private static final int ESCALA_MOVIMENTACAO = 10;
 
     public static void main (String args[])
@@ -38,8 +42,8 @@ public class Cliente1
        
         try
         {
-            String host = Cliente1.HOST_PADRAO;
-            int   porta = Cliente1.PORTA_PADRAO;
+            String host = Cliente.HOST_PADRAO;
+            int   porta = Cliente.PORTA_PADRAO;
 
             if (args.length > 0)
                 host = args[0];
@@ -74,6 +78,13 @@ public class Cliente1
         catch (Exception erro) {};
     }
 
+    public static void setPlayer(int index) // nhe
+    {
+        if (index == 0)      Janela.setEventListener(player1);
+        else if (index == 1) Janela.setEventListener(player1);
+        else throw new Exception("Index out of range");
+    } 
+
     public static void realizarMovimentacoes(char playerMovimentante, char direcaoMovimento)
     {
         if (direcaoMovimento == 'N')
@@ -103,9 +114,7 @@ public class Cliente1
     public static class Janela extends JFrame
     {   
         protected JLayeredPane fundo;
-
-        static Container cntForm = null;
-        
+        static Container cntForm = null; 
 
         public Janela () 
         {
@@ -145,7 +154,7 @@ public class Cliente1
             cntForm.setBackground(Color.DARK_GRAY);
 
             this.addWindowListener(new FechamentoDeJanela());
-            this.addKeyListener(new keyEvent());
+            // this.addKeyListener(new keyEvent());
             this.setSize(700, 700);
             this.setVisible(true);
             this.setResizable(false);
@@ -160,6 +169,9 @@ public class Cliente1
             {
                 if (player1x <= 75 || player1x >= 550 || player1y >= 550 || player1y <= 75)
                     servidor.receba(new ComunicadoDeVitoria('L'));
+
+                if (player2x <= 75 || player2x >= 550 || player2y >= 550 || player2y <= 75)
+                    servidor.receba(new ComunicadoDeVitoria('A'));
             }
             catch (Exception erro)
             {
@@ -172,32 +184,31 @@ public class Cliente1
             JOptionPane.showMessageDialog(cntForm, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
         }
 
-        class FechamentoDeJanela extends WindowAdapter 
-        {
-            public void windowClosing(WindowEvent e) 
-            {
+        public static void setEventListener(JLabel player)
+        { // I dont know
+            Janela.keyEvent k = new keyEvent();
+            player.addKeyListener(k);
+            player.addKeyListener(new keyEvent());
+        }
+
+        class FechamentoDeJanela extends WindowAdapter {
+            public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         }
 
-        class keyEvent implements KeyListener 
-        {
-            public void keyTyped(KeyEvent e)
-            {
-            }
+        class keyEvent implements KeyListener  {
+            public void keyTyped(KeyEvent e) { }
         
             public void keyPressed(KeyEvent e) 
             {
-                if (e.getKeyCode() == KeyEvent.VK_W) { Cliente1.mandarMovimentacoes('A', 'N'); }
-                else if (e.getKeyCode() == KeyEvent.VK_A) { Cliente1.mandarMovimentacoes('A', 'O'); }
-                else if (e.getKeyCode() == KeyEvent.VK_S) { Cliente1.mandarMovimentacoes('A', 'S'); }
-                else if (e.getKeyCode() == KeyEvent.VK_D) { Cliente1.mandarMovimentacoes('A', 'L'); }
+                if (e.getKeyCode() == KeyEvent.VK_W) { Cliente.mandarMovimentacoes('A', 'N'); }
+                else if (e.getKeyCode() == KeyEvent.VK_A) { Cliente.mandarMovimentacoes('A', 'O'); }
+                else if (e.getKeyCode() == KeyEvent.VK_S) { Cliente.mandarMovimentacoes('A', 'S'); }
+                else if (e.getKeyCode() == KeyEvent.VK_D) { Cliente.mandarMovimentacoes('A', 'L'); }
             }
         
-            public void keyReleased(KeyEvent e) 
-            {
-            }
+            public void keyReleased(KeyEvent e) { }
         }
     }
-    
 }

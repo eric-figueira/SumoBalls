@@ -21,7 +21,7 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
             {
                 if (this.servidor.espie() instanceof ComunicadoDeDesligamento)
                 {
-                    Cliente1.Janela.MostrarMensagemDeErro("VAI DAR MERDA");
+                    Cliente.Janela.MostrarMensagemDeErro("VAI DAR MERDA");
                 }
             }
             catch (Exception erro)

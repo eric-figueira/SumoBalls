@@ -7,8 +7,7 @@ public class SupervisoraDeConexao extends Thread
     private Parceiro            usuario;
     private Socket              conexao;
     private ArrayList<Parceiro> usuarios;
-    // private int x, y;
-    // private char direcao;
+
 
     public SupervisoraDeConexao (Socket conexao, ArrayList<Parceiro> usuarios) throws Exception 
     {
@@ -63,6 +62,7 @@ public class SupervisoraDeConexao extends Thread
             synchronized (usuarios) 
             {
                 this.usuarios.add(usuario);
+                Cliente.setPlayer(this.usuarios.indexOf(usuario));
             }
 
             for (;;) 
