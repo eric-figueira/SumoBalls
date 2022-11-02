@@ -1,0 +1,10 @@
+================
+THE GAME PLAN
+================
+
+1 - Criar um ComunicadoDeJogador, que vai ter um construtor qeu vai falar pro cliente qual player ele tem que controlar
+2 - Ao aceitar uma nova conexao, a SupervisoraDeConexao vai ver qual é a posicao desse usuario no ArrayList usuarios, e vai mandar pro cliente um ComunicadoDeJogador:
+    0 --> primeiro jogador --> 'A'
+    1 --> segundo  jogador --> 'L'
+3 - O cliente, ao receber esse comunicado, vai setar os eventListeners pras bolinhas de acordo com o que recebeu
+4 - Comemorar
