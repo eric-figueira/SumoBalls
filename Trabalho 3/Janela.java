@@ -1,8 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.*;
-import javax.imageio.*;
+//import java.util.*;
+//import javax.imageio.*;
 
 
 public class Janela extends JFrame

@@ -3,8 +3,8 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.*;
-import javax.swing.*;
+//import java.util.*;
+//import javax.swing.*;
 
 public class Cliente
 {
@@ -23,12 +23,14 @@ public class Cliente
     private static int player1x = 200;
     private static int player1y = 200;
     private static char dirPlayer1 = 'N';
+    private static ImageIcon imgPlayer1;
 
 
     // Posicoes iniciais e direcao jogador 2
     private static int player2x = 425;
     private static int player2y = 425;
     private static char dirPlayer2 = 'S';
+    private static ImageIcon imgPlayer2;
 
 
     // Quando os jogadores vao se mexer
@@ -114,7 +116,7 @@ public class Cliente
         else throw new Exception("Index out of range");
     } 
 
-    public static void realizarMovimentacoes(char playerMovimentante, char direcaoMovimento)
+    public static void realizarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
         if (direcaoMovimento == 'N')
         {
@@ -140,6 +142,28 @@ public class Cliente
         Janela.AtualizarTela();
     }
 
+
+    public static void realizarRotacao(char playerRotante, char direcaoRotacao)
+    { // a fazer
+        /*if (playerRotante == 'A')
+        {
+            if (direcaoRotacao == 'N')
+            {
+                dirPlayer1 = direcaoRotacao;
+                imgPlayer1 = new ImageIcon(getClass().getResource("NOVA IMAGEM"));
+                player1 = new JLabel(imgPlayer1);
+                player1.setBounds(player1x, player1y, 75, 75);
+            }
+        }*/
+    }
+
+
+    public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
+    {
+
+    }
+
+
     public static class Janela extends JFrame
     {   
         protected JLayeredPane fundo;
@@ -162,12 +186,12 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
             
-            ImageIcon imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1.png"));
+            imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1.png"));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 75, 75);
 
             
-            ImageIcon imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2.png"));
+            imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2.png"));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 75, 75);
 
@@ -214,9 +238,9 @@ public class Cliente
 
         public static void setEventListener(JLabel player)
         { // I dont know
-            Janela.keyEvent k = new keyEvent();
-            player.addKeyListener(k);
-            player.addKeyListener(new keyEvent());
+            //Janela.keyEvent k = new keyEvent();
+           // player.addKeyListener(k);
+            //player.addKeyListener(new keyEvent());
         }
 
         class FechamentoDeJanela extends WindowAdapter {
@@ -225,7 +249,7 @@ public class Cliente
             }
         }
 
-        class keyEvent implements KeyListener  {
+        class keyEvent implements KeyListener {
             public void keyTyped(KeyEvent e) { }
         
             public void keyPressed(KeyEvent e) 

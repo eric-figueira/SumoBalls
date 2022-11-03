@@ -1,4 +1,4 @@
-import java.net.*;
+//import java.net.*;
 
 
 public class TratadoraJogador extends Thread
@@ -22,17 +22,17 @@ public class TratadoraJogador extends Thread
                 if (this.servidor.espie() instanceof Movimentacao)
                 {
                     Movimentacao movimento = (Movimentacao) servidor.envie ();
-                    Cliente.realizarMovimentacoes(movimento.getPlayerMovimentante(),movimento.getDirecaoDoMovimento());
+                    Cliente.realizarMovimentacao(movimento.getPlayerMovimentante(),movimento.getDirecaoDoMovimento());
                 }
                 else if (this.servidor.espie() instanceof Rotacao)
                 {
                     Rotacao rotacao = (Rotacao) servidor.envie();
-                    Cliente.realizarRotacoes(rotacao.getPlayerRotante(),rotacao.getDirecaoDoMovimento());
+                    Cliente.realizarRotacao(rotacao.getPlayerRotante(),rotacao.getDirecaoDoMovimento());
                 }
                 else if (this.servidor.espie() instanceof Ataque)
                 {
                     Ataque ataque = (Ataque) servidor.envie();
-                    Cliente.realizarAtaques(ataque.getPlayerAtacante(),ataque.getDirecaoDoAtaque());
+                    Cliente.realizarAtaque(ataque.getPlayerAtacante(),ataque.getDirecaoDoAtaque());
                 }
             }
             catch (Exception erro)
