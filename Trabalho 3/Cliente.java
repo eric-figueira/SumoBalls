@@ -160,7 +160,7 @@ public class Cliente
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
-
+        
     }
 
 

@@ -74,7 +74,9 @@ public class SupervisoraDeConexao extends Thread
 
                 if (comunicado instanceof Ataque)
                 {
-
+                    Ataque ataq = (Ataque) usuario.envie();
+                    for (Parceiro parceiro : usuarios)
+                        parceiro.receba(ataq);
                 }
                 else if (comunicado instanceof Movimentacao) 
                 {
@@ -84,7 +86,9 @@ public class SupervisoraDeConexao extends Thread
                 }
                 else if (comunicado instanceof Rotacao) 
                 {
-
+                    Rotacao rot = (Rotacao) usuario.envie();
+                    for (Parceiro parceiro : usuarios)
+                        parceiro.receba(rot);
                 }
                 else if (comunicado instanceof PedidoParaSair) 
                 {
