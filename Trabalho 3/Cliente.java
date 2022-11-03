@@ -13,20 +13,30 @@ public class Cliente
     public static final int PORTA_PADRAO = 3000;
     private static Parceiro servidor = null; 
 
+
     // Criacao dos jogadores
     private static JLabel player1 = null;
     private static JLabel player2 = null;
 
-    // Posicoes iniciais jogador 1
+
+    // Posicoes iniciais e direcao jogador 1
     private static int player1x = 200;
     private static int player1y = 200;
+    private static char dirPlayer1 = 'N';
 
-    // Posicoes iniciais jogador 2
+
+    // Posicoes iniciais e direcao jogador 2
     private static int player2x = 425;
     private static int player2y = 425;
+    private static char dirPlayer2 = 'S';
+
 
     // Quando os jogadores vao se mexer
     private static final int ESCALA_MOVIMENTACAO = 10;
+
+    private static char playerControlante;
+    private static char direcaoPlayerControlante;
+
 
     public static void main (String args[])
     {
@@ -59,29 +69,48 @@ public class Cliente
         catch (Exception erro) { System.out.println("Indique o servidor e a porta corretos!"); }
 
         TratadoraDeComunicadoDeDesligamento tratadoraDeComunicadoDeDesligamento = null;
+        TratadoraJogador tratadoraJogador = null;
 
         try
         {
             tratadoraDeComunicadoDeDesligamento = new TratadoraDeComunicadoDeDesligamento(servidor);
+            tratadoraJogador = new TratadoraJogador(servidor);
         }
         catch (Exception erro)
         {}
 
         tratadoraDeComunicadoDeDesligamento.start();
+        tratadoraJogador.start();
 
         new Janela();
     }
 
-    public static void mandarMovimentacoes(char playerMovimentante, char direcaoMovimento)
+
+    public static void mandarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
         try { servidor.receba(new Movimentacao(playerMovimentante, direcaoMovimento)); }
-        catch (Exception erro) {};
+        catch (Exception erro) {}
     }
 
-    public static void setPlayer(int index) // nhe
+
+    public static void mandarRotacao(char playerRotante, char direcaoRotacao)
     {
-        if (index == 0)      Janela.setEventListener(player1);
-        else if (index == 1) Janela.setEventListener(player1);
+        try { servidor.receba(new Rotacao(playerRotante, direcaoRotacao)); }
+        catch (Exception erro) {}
+    }
+
+
+    public static void mandarAtaque(char playerAtacante, char direcaoAtaque)
+    {
+        try { servidor.receba(new Ataque(playerAtacante, direcaoAtaque)); }
+        catch (Exception erro) {}
+    }
+
+
+    public static void setPlayer(int index) throws Exception
+    {
+        if (index == 0)      { Janela.setEventListener(player1); playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
+        else if (index == 1) { Janela.setEventListener(player2); playerControlante = 'L'; direcaoPlayerControlante = 'S';}
         else throw new Exception("Index out of range");
     } 
 
@@ -154,7 +183,6 @@ public class Cliente
             cntForm.setBackground(Color.DARK_GRAY);
 
             this.addWindowListener(new FechamentoDeJanela());
-            // this.addKeyListener(new keyEvent());
             this.setSize(700, 700);
             this.setVisible(true);
             this.setResizable(false);
@@ -202,10 +230,38 @@ public class Cliente
         
             public void keyPressed(KeyEvent e) 
             {
-                if (e.getKeyCode() == KeyEvent.VK_W) { Cliente.mandarMovimentacoes('A', 'N'); }
-                else if (e.getKeyCode() == KeyEvent.VK_A) { Cliente.mandarMovimentacoes('A', 'O'); }
-                else if (e.getKeyCode() == KeyEvent.VK_S) { Cliente.mandarMovimentacoes('A', 'S'); }
-                else if (e.getKeyCode() == KeyEvent.VK_D) { Cliente.mandarMovimentacoes('A', 'L'); }
+                if (e.getKeyCode() == KeyEvent.VK_W) 
+                { 
+                    if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
+                        Cliente.mandarRotacao(playerControlante,'N');
+                    else
+                        Cliente.mandarMovimentacao(playerControlante,'N');
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_A) 
+                { 
+                    if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
+                        Cliente.mandarRotacao(playerControlante,'O');
+                    else
+                        Cliente.mandarMovimentacao(playerControlante,'O');
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_S) 
+                { 
+                   if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
+                        Cliente.mandarRotacao(playerControlante,'S');
+                    else
+                        Cliente.mandarMovimentacao(playerControlante,'S');
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_D) 
+                { 
+                    if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'N')
+                        Cliente.mandarRotacao(playerControlante,'L');
+                    else
+                        Cliente.mandarMovimentacao(playerControlante,'L');
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_L) 
+                { 
+                    Cliente.mandarAtaque(playerControlante,direcaoPlayerControlante);
+                }
             }
         
             public void keyReleased(KeyEvent e) { }
