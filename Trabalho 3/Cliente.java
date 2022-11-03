@@ -160,7 +160,10 @@ public class Cliente
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
-        
+        if (playerAtacante == 'A')
+        {
+
+        }
     }
 
 
@@ -186,12 +189,12 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
             
-            imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1.png"));
+            imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1_N.png"));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 75, 75);
 
             
-            imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2.png"));
+            imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2_S.png"));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 75, 75);
 
@@ -227,6 +230,7 @@ public class Cliente
             }
             catch (Exception erro)
             {
+                erro.printStackTrace();
                 MostrarMensagemDeErro(erro.getMessage());
             }
         }
@@ -236,11 +240,10 @@ public class Cliente
             JOptionPane.showMessageDialog(cntForm, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
         }
 
-        public static void setEventListener(JLabel player)
+        public void setEventListener(JLabel player)
         { // I dont know
-            //Janela.keyEvent k = new keyEvent();
-           // player.addKeyListener(k);
-            //player.addKeyListener(new keyEvent());
+            keyEvented k = new keyEvented();
+            player.addKeyListener(k);
         }
 
         class FechamentoDeJanela extends WindowAdapter {
@@ -249,7 +252,7 @@ public class Cliente
             }
         }
 
-        class keyEvent implements KeyListener {
+        class keyEvented implements KeyListener {
             public void keyTyped(KeyEvent e) { }
         
             public void keyPressed(KeyEvent e) 
