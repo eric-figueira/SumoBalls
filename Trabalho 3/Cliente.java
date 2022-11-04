@@ -111,6 +111,7 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
+        
         if (index == 0)      { janela.setEventListener(player1); playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
         else if (index == 1) { janela.setEventListener(player2); playerControlante = 'L'; direcaoPlayerControlante = 'S';}
         else throw new Exception("Index out of range");
@@ -178,12 +179,12 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
             
-            ImageIcon imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1.png"));
+            ImageIcon imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1_N.png"));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 75, 75);
 
             
-            ImageIcon imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2.png"));
+            ImageIcon imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2_S.png"));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 75, 75);
 
