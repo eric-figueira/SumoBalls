@@ -30,11 +30,15 @@ public class Cliente
     private static int player2y = 425;
     private static char dirPlayer2 = 'S';
 
+    // imagens dos jogadores
+    private static ImageIcon imgPlayer1 = null;
+    private static ImageIcon imgPlayer2 = null;
+
 
     // Quando os jogadores vao se mexer
-    private static final int ESCALA_MOVIMENTACAO = 10;
+    private static final int ESCALA_MOVIMENTACAO = 20;
 
-    private static char playerControlante;
+    private static char playerControlante = 'A';
     private static char direcaoPlayerControlante;
 
     static Janela janela = null;
@@ -97,6 +101,7 @@ public class Cliente
 
     public static void mandarRotacao(char playerRotante, char direcaoRotacao)
     {
+        //Janela.MostrarMensagemDeErro(playerRotante+":"+direcaoPlayerControlante+":"+direcaoRotacao);
         try { servidor.receba(new Rotacao(playerRotante, direcaoRotacao)); }
         catch (Exception erro) {}
     }
@@ -111,9 +116,8 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
-        
-        if (index == 0)      { janela.setEventListener(player1); playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
-        else if (index == 1) { janela.setEventListener(player2); playerControlante = 'L'; direcaoPlayerControlante = 'S';}
+        if (index == 0)      { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
+        else if (index == 1) { playerControlante = 'L'; direcaoPlayerControlante = 'S';}
         else throw new Exception("Index out of range");
     } 
 
@@ -143,10 +147,55 @@ public class Cliente
         Janela.AtualizarTela();
     }
 
-
+    //imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_N.png")));
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
+        if (direcaoRotacao == 'N')
+        {
+            if (playerRotante == 'A')
+            {
+                dirPlayer2 = 'N';
+            }
+            if (playerRotante == 'L')
+            {
+                dirPlayer2 = 'N';
+            }
+        }
+        else if (direcaoRotacao == 'S')
+        {
+            if (playerRotante == 'A')
+            {
+                dirPlayer2 = 'S';
+            }
+            if (playerRotante == 'L')
+            {
+                dirPlayer2 = 'S';
+            }
+        }
+        else if (direcaoRotacao == 'O')
+        {
+            if (playerRotante == 'A')
+            {
+                dirPlayer2 = 'O';
+            }
+            if (playerRotante == 'L')
+            {
+                dirPlayer2 = 'O';
+            }
+        }
+        else if (direcaoRotacao == 'L')
+        {
+            if (playerRotante == 'A')
+            {
+                dirPlayer2 = 'L';
+            }
+            if (playerRotante == 'L')
+            {
+                dirPlayer2 = 'L';
+            }
+        }
 
+        Janela.AtualizarTela();
     }
 
 
@@ -159,8 +208,7 @@ public class Cliente
 
     public static class Janela extends JFrame
     {   
-        protected JLayeredPane fundo;
-        static Container cntForm = null; 
+        static JLayeredPane fundo;
 
         public Janela () 
         {
@@ -179,27 +227,28 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
             
-            ImageIcon imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1_N.png"));
+            imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
             player1 = new JLabel(imgPlayer1);
-            player1.setBounds(player1x, player1y, 75, 75);
+            player1.setBounds(player1x, player1y, 92, 92);
 
             
-            ImageIcon imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2_S.png"));
+            imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
             player2 = new JLabel(imgPlayer2);
-            player2.setBounds(player2x, player2y, 75, 75);
+            player2.setBounds(player2x, player2y, 92, 92);
 
-            this.fundo = new JLayeredPane();
-            this.fundo.setSize(600, 600);
-            this.fundo.add(titulo, 2);
-            this.fundo.add(ringue, 2);
-            this.fundo.add(player1, 1);
-            this.fundo.add(player2, 1);
+            fundo = new JLayeredPane();
+            fundo.setSize(600, 600);
+            fundo.add(titulo, 2);
+            fundo.add(ringue, 2);
+            fundo.add(player1, 1);
+            fundo.add(player2, 1);
 
-            cntForm = this.getContentPane();
-            cntForm.add(this.fundo);
+            Container cntForm = this.getContentPane();
+            cntForm.add(fundo);
             cntForm.setBackground(Color.DARK_GRAY);
 
             this.addWindowListener(new FechamentoDeJanela());
+            this.addKeyListener(new keyHandler());
             this.setSize(700, 700);
             this.setVisible(true);
             this.setResizable(false);
@@ -207,15 +256,17 @@ public class Cliente
 
         public static void AtualizarTela()
         {
-            player1.setBounds(player1x, player1y, 75, 75);
-            player2.setBounds(player2x, player2y, 75, 75);
+            player1.setBounds(player1x, player1y, 92, 92);
+            player2.setBounds(player2x, player2y, 92, 92);
+            //player1 = new JLabel(imgPlayer1);
+            //player2 = new JLabel(imgPlayer2);
 
             try
             {
-                if (player1x <= 75 || player1x >= 550 || player1y >= 550 || player1y <= 75)
+                if (player1x <= 92 || player1x >= 550 || player1y >= 550 || player1y <= 92)
                     servidor.receba(new ComunicadoDeVitoria('L'));
 
-                if (player2x <= 75 || player2x >= 550 || player2y >= 550 || player2y <= 75)
+                if (player2x <= 92 || player2x >= 550 || player2y >= 550 || player2y <= 92)
                     servidor.receba(new ComunicadoDeVitoria('A'));
             }
             catch (Exception erro)
@@ -226,13 +277,9 @@ public class Cliente
 
         public static void MostrarMensagemDeErro(String erroRecebido)
         {
-            JOptionPane.showMessageDialog(cntForm, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(fundo, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
         }
 
-        public void setEventListener(JLabel player)
-        {
-            player.addKeyListener(new keyEvent());
-        }
 
         class FechamentoDeJanela extends WindowAdapter {
             public void windowClosing(WindowEvent e) {
@@ -240,46 +287,42 @@ public class Cliente
             }
         }
 
-        class keyEvent implements KeyListener  {
-            public void keyTyped(KeyEvent e) { }
-        
-            public void keyPressed(KeyEvent e) 
+        class keyHandler extends KeyAdapter  {
+            public void keyPressed(KeyEvent e)
             {
-                if (e.getKeyCode() == KeyEvent.VK_W) 
-                { 
+                if (e.getKeyCode() == KeyEvent.VK_W)
+                {
                     if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
-                        Cliente.mandarRotacao(playerControlante,'N');
+                        Cliente.mandarRotacao(playerControlante, 'N');
                     else
                         Cliente.mandarMovimentacao(playerControlante,'N');
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_A) 
-                { 
+                else if (e.getKeyCode() == KeyEvent.VK_A)
+                {
                     if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
                         Cliente.mandarRotacao(playerControlante,'O');
                     else
                         Cliente.mandarMovimentacao(playerControlante,'O');
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_S) 
-                { 
-                   if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
+                else if (e.getKeyCode() == KeyEvent.VK_S)
+                {
+                    if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
                         Cliente.mandarRotacao(playerControlante,'S');
                     else
                         Cliente.mandarMovimentacao(playerControlante,'S');
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_D) 
-                { 
+                else if (e.getKeyCode() == KeyEvent.VK_D)
+                {
                     if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'N')
                         Cliente.mandarRotacao(playerControlante,'L');
                     else
                         Cliente.mandarMovimentacao(playerControlante,'L');
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_L) 
-                { 
+                else if (e.getKeyCode() == KeyEvent.VK_L)
+                {
                     Cliente.mandarAtaque(playerControlante,direcaoPlayerControlante);
                 }
             }
-        
-            public void keyReleased(KeyEvent e) { }
         }
     }
 }

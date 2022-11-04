@@ -13,7 +13,7 @@ public class Rotacao extends Comunicado
 
     public char getPlayerRotante() { return this.playerRotante; }
 
-    public char getDirecaoDoMovimento() { return this.direcaoRotacao; }
+    public char getDirecaoDaRotacao() { return this.direcaoRotacao; }
 
     @Override
     public String toString()

@@ -27,7 +27,7 @@ public class TratadoraJogador extends Thread
                 else if (this.servidor.espie() instanceof Rotacao)
                 {
                     Rotacao rotacao = (Rotacao) servidor.envie();
-                    Cliente.realizarRotacao(rotacao.getPlayerRotante(),rotacao.getDirecaoDoMovimento());
+                    Cliente.realizarRotacao(rotacao.getPlayerRotante(),rotacao.getDirecaoDaRotacao());
                 }
                 else if (this.servidor.espie() instanceof Ataque)
                 {
