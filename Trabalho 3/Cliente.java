@@ -3,8 +3,8 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//import java.util.*;
-//import javax.swing.*;
+import java.util.*;
+import javax.swing.*;
 
 public class Cliente
 {
@@ -23,14 +23,12 @@ public class Cliente
     private static int player1x = 200;
     private static int player1y = 200;
     private static char dirPlayer1 = 'N';
-    private static ImageIcon imgPlayer1;
 
 
     // Posicoes iniciais e direcao jogador 2
     private static int player2x = 425;
     private static int player2y = 425;
     private static char dirPlayer2 = 'S';
-    private static ImageIcon imgPlayer2;
 
 
     // Quando os jogadores vao se mexer
@@ -38,6 +36,8 @@ public class Cliente
 
     private static char playerControlante;
     private static char direcaoPlayerControlante;
+
+    static Janela janela = null;
 
 
     public static void main (String args[])
@@ -84,7 +84,7 @@ public class Cliente
         tratadoraDeComunicadoDeDesligamento.start();
         tratadoraJogador.start();
 
-        new Janela();
+        janela = new Janela();
     }
 
 
@@ -111,8 +111,8 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
-        if (index == 0)      { Janela.setEventListener(player1); playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
-        else if (index == 1) { Janela.setEventListener(player2); playerControlante = 'L'; direcaoPlayerControlante = 'S';}
+        if (index == 0)      { janela.setEventListener(player1); playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
+        else if (index == 1) { janela.setEventListener(player2); playerControlante = 'L'; direcaoPlayerControlante = 'S';}
         else throw new Exception("Index out of range");
     } 
 
@@ -144,27 +144,16 @@ public class Cliente
 
 
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
-    { // a fazer
-        /*if (playerRotante == 'A')
-        {
-            if (direcaoRotacao == 'N')
-            {
-                dirPlayer1 = direcaoRotacao;
-                imgPlayer1 = new ImageIcon(getClass().getResource("NOVA IMAGEM"));
-                player1 = new JLabel(imgPlayer1);
-                player1.setBounds(player1x, player1y, 75, 75);
-            }
-        }*/
+    {
+
     }
 
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
-        if (playerAtacante == 'A')
-        {
 
-        }
     }
+
 
 
     public static class Janela extends JFrame
@@ -189,12 +178,12 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
             
-            imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1_N.png"));
+            ImageIcon imgPlayer1 = new ImageIcon(getClass().getResource("Imagens/player_1.png"));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 75, 75);
 
             
-            imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2_S.png"));
+            ImageIcon imgPlayer2 = new ImageIcon(getClass().getResource("Imagens/player_2.png"));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 75, 75);
 
@@ -230,7 +219,6 @@ public class Cliente
             }
             catch (Exception erro)
             {
-                erro.printStackTrace();
                 MostrarMensagemDeErro(erro.getMessage());
             }
         }
@@ -241,9 +229,8 @@ public class Cliente
         }
 
         public void setEventListener(JLabel player)
-        { // I dont know
-            keyEvented k = new keyEvented();
-            player.addKeyListener(k);
+        {
+            player.addKeyListener(new keyEvent());
         }
 
         class FechamentoDeJanela extends WindowAdapter {
@@ -252,7 +239,7 @@ public class Cliente
             }
         }
 
-        class keyEvented implements KeyListener {
+        class keyEvent implements KeyListener  {
             public void keyTyped(KeyEvent e) { }
         
             public void keyPressed(KeyEvent e) 
