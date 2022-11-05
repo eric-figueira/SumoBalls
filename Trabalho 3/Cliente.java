@@ -20,14 +20,14 @@ public class Cliente
 
 
     // Posicoes iniciais e direcao jogador 1
-    private static int player1x = 200;
-    private static int player1y = 200;
+    private static int player1x = 425;
+    private static int player1y = 425;
     private static char dirPlayer1 = 'N';
 
 
     // Posicoes iniciais e direcao jogador 2
-    private static int player2x = 425;
-    private static int player2y = 425;
+    private static int player2x = 200;
+    private static int player2y = 200;
     private static char dirPlayer2 = 'S';
 
     // imagens dos jogadores
@@ -35,11 +35,11 @@ public class Cliente
     private static ImageIcon imgPlayer2 = null;
 
 
-    // Quando os jogadores vao se mexer
+    // Quanto os jogadores vao se mexer
     private static final int ESCALA_MOVIMENTACAO = 20;
 
-    private static char playerControlante = 'L';
-    private static char direcaoPlayerControlante;
+    private static char playerControlante = 'A';
+    private static char direcaoPlayerControlante = 'N';
 
     static Janela janela = null;
 
@@ -95,22 +95,23 @@ public class Cliente
     public static void mandarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
         try { servidor.receba(new Movimentacao(playerMovimentante, direcaoMovimento)); }
-        catch (Exception erro) {}
+        catch (Exception erro) {Janela.MostrarMensagemDeErro(erro.getMessage());}
     }
 
 
     public static void mandarRotacao(char playerRotante, char direcaoRotacao)
     {
-        //Janela.MostrarMensagemDeErro(playerRotante+":"+direcaoPlayerControlante+":"+direcaoRotacao);
+        Janela.MostrarMensagemDeErro(playerRotante+":"+direcaoPlayerControlante+":"+direcaoRotacao);
         try { servidor.receba(new Rotacao(playerRotante, direcaoRotacao)); }
-        catch (Exception erro) {}
+        catch (Exception erro) {Janela.MostrarMensagemDeErro(erro.getMessage());}
     }
 
 
     public static void mandarAtaque(char playerAtacante, char direcaoAtaque)
     {
+        Janela.MostrarMensagemDeErro(playerAtacante+":"+direcaoAtaque);
         try { servidor.receba(new Ataque(playerAtacante, direcaoAtaque)); }
-        catch (Exception erro) {}
+        catch (Exception erro) {Janela.MostrarMensagemDeErro(erro.getMessage());}
     }
 
 
@@ -147,7 +148,6 @@ public class Cliente
         Janela.AtualizarTela();
     }
 
-    //imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_N.png")));
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
         Cliente.Janela.MostrarMensagemDeErro("AAAAAAAAAAAAAAAAA");
@@ -196,13 +196,16 @@ public class Cliente
             }
         }
 
+        if (playerControlante == playerRotante)
+            direcaoPlayerControlante = direcaoRotacao;
+
         Janela.AtualizarTela();
     }
 
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
-
+        Janela.MostrarMensagemDeErro(playerAtacante+":"+direcaoAtaque);
     }
 
 
@@ -228,12 +231,12 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
             
-            imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_N.png")));
+            imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 92, 92);
 
             
-            imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_S.png")));
+            imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 92, 92);
 
@@ -288,15 +291,18 @@ public class Cliente
             }
         }
 
-        class keyHandler extends KeyAdapter  {
-            public void keyPressed(KeyEvent e)
+        class keyHandler implements KeyListener  {
+            @Override
+            public void keyReleased(KeyEvent e)
             {
                 if (e.getKeyCode() == KeyEvent.VK_W)
                 {
                     if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
                         Cliente.mandarRotacao(playerControlante, 'N');
-                    else
-                        Cliente.mandarMovimentacao(playerControlante,'N');
+                    else {
+                        Janela.MostrarMensagemDeErro("ASOKJDUAOSDUO ASOLUD ");
+                        Cliente.mandarMovimentacao(playerControlante, 'N');
+                    }
                 }
                 else if (e.getKeyCode() == KeyEvent.VK_A)
                 {
@@ -324,6 +330,11 @@ public class Cliente
                     Cliente.mandarAtaque(playerControlante,direcaoPlayerControlante);
                 }
             }
+
+            @Override
+            public void keyPressed(KeyEvent e) { }
+            @Override
+            public void keyTyped(KeyEvent e) { }
         }
     }
 }

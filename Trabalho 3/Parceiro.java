@@ -11,7 +11,7 @@ public class Parceiro
 
     private Comunicado proximoComunicado = null;
 
-    private Semaphore semaforo = new Semaphore(1, true);
+    private Semaphore semaforo = new Semaphore(2, true);
     
     public Parceiro (Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception
     {
