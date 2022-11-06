@@ -94,6 +94,7 @@ public class Cliente
 
     public static void mandarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
+        //Janela.MostrarMensagemDeErro(playerMovimentante + " MOVEU DE " + direcaoPlayerControlante + " PARA " + direcaoMovimento);
         try { servidor.receba(new Movimentacao(playerMovimentante, direcaoMovimento)); }
         catch (Exception erro) {Janela.MostrarMensagemDeErro(erro.getMessage());}
     }
@@ -101,7 +102,7 @@ public class Cliente
 
     public static void mandarRotacao(char playerRotante, char direcaoRotacao)
     {
-        Janela.MostrarMensagemDeErro(playerRotante+":"+direcaoPlayerControlante+":"+direcaoRotacao);
+        //Janela.MostrarMensagemDeErro(playerRotante + " ROTACIONOU DE " + direcaoPlayerControlante + " PARA " + direcaoRotacao);
         try { servidor.receba(new Rotacao(playerRotante, direcaoRotacao)); }
         catch (Exception erro) {Janela.MostrarMensagemDeErro(erro.getMessage());}
     }
@@ -109,7 +110,7 @@ public class Cliente
 
     public static void mandarAtaque(char playerAtacante, char direcaoAtaque)
     {
-        Janela.MostrarMensagemDeErro(playerAtacante+":"+direcaoAtaque);
+        //Janela.MostrarMensagemDeErro(playerAtacante + " ATACOU PARA O " + direcaoAtaque);
         try { servidor.receba(new Ataque(playerAtacante, direcaoAtaque)); }
         catch (Exception erro) {Janela.MostrarMensagemDeErro(erro.getMessage());}
     }
@@ -117,13 +118,17 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
+        Janela.MostrarMensagemDeErro("INDEX: " + index);
         if (index == 0)      { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
         else if (index == 1) { playerControlante = 'L'; direcaoPlayerControlante = 'S';}
         else throw new Exception("Index out of range");
+        Janela.MostrarMensagemDeErro(playerControlante+"");
+        Janela.MostrarMensagemDeErro(direcaoPlayerControlante+"");
     } 
 
     public static void realizarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
+        Cliente.Janela.MostrarMensagemDeErro("UMA MOVIMENTACAO ESTA ACONTECENDO");
         if (direcaoMovimento == 'N')
         {
             if (playerMovimentante == 'A') player1y -= ESCALA_MOVIMENTACAO;
@@ -150,7 +155,7 @@ public class Cliente
 
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
-        Cliente.Janela.MostrarMensagemDeErro("AAAAAAAAAAAAAAAAA");
+        Cliente.Janela.MostrarMensagemDeErro("UMA ROTACAO ESTA ACONTECENDO");
         if (direcaoRotacao == 'N')
         {
             if (playerRotante == 'A')
@@ -205,7 +210,7 @@ public class Cliente
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
-        Janela.MostrarMensagemDeErro(playerAtacante+":"+direcaoAtaque);
+        Cliente.Janela.MostrarMensagemDeErro("UM ATAQUE ESTA ACONTECENDO");
     }
 
 
@@ -295,19 +300,23 @@ public class Cliente
             @Override
             public void keyReleased(KeyEvent e)
             {
-                if (e.getKeyCode() == KeyEvent.VK_W)
-                {
+                if (e.getKeyCode() == KeyEvent.VK_W) {
                     if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
+                    {
+                        //Janela.MostrarMensagemDeErro("Rotacionou");
                         Cliente.mandarRotacao(playerControlante, 'N');
+                    }
                     else {
-                        Janela.MostrarMensagemDeErro("ASOKJDUAOSDUO ASOLUD ");
+                        //Janela.MostrarMensagemDeErro("Movimentou");
                         Cliente.mandarMovimentacao(playerControlante, 'N');
                     }
                 }
                 else if (e.getKeyCode() == KeyEvent.VK_A)
                 {
-                    if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
-                        Cliente.mandarRotacao(playerControlante,'O');
+                    if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L') {
+                        //Janela.MostrarMensagemDeErro("Rotacionou");
+                        Cliente.mandarRotacao(playerControlante, 'O');
+                    }
                     else
                         Cliente.mandarMovimentacao(playerControlante,'O');
                 }

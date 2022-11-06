@@ -11,7 +11,7 @@ public class Parceiro
 
     private Comunicado proximoComunicado = null;
 
-    private Semaphore semaforo = new Semaphore(2, true);
+    private Semaphore semaforo = new Semaphore(1, true);
     
     public Parceiro (Socket conexao, ObjectInputStream receptor, ObjectOutputStream transmissor) throws Exception
     {
@@ -31,16 +31,16 @@ public class Parceiro
         {
             transmissor.writeObject(x);
             transmissor.flush();
+            Cliente.Janela.MostrarMensagemDeErro("MANDEI PARA O PARCEIRO");
         }
-        catch (IOException erro) { throw new IOException("Erro na transmissãoo!"); }
+        catch (IOException erro) { throw new IOException("Erro na transmissão"); }
     }
 
 
-    public Comunicado espie () throws Exception // revisar
+    public Comunicado espie () throws Exception
     {
         try
         {
-            semaforo.acquireUninterruptibly();
             if (this.proximoComunicado == null) 
                 this.proximoComunicado = (Comunicado) receptor.readObject();
             semaforo.release();
@@ -51,7 +51,7 @@ public class Parceiro
     }
 
 
-    public Comunicado envie () throws Exception // revisar
+    public Comunicado envie () throws Exception
     {
         try
         {

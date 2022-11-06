@@ -1,5 +1,4 @@
-//import java.net.*;
-
+import java.net.*;
 
 public class TratadoraJogador extends Thread
 {
@@ -26,11 +25,8 @@ public class TratadoraJogador extends Thread
                 }
                 else if (this.servidor.espie() instanceof Rotacao)
                 {
-                    Cliente.Janela.MostrarMensagemDeErro("POR FAVOR FUNCIONA 1");
                     Rotacao rotacao = (Rotacao) servidor.envie();
-                    Cliente.Janela.MostrarMensagemDeErro("POR FAVOR FUNCIONA 2");
                     Cliente.realizarRotacao(rotacao.getPlayerRotante(),rotacao.getDirecaoDaRotacao());
-                    Cliente.Janela.MostrarMensagemDeErro("POR FAVOR FUNCIONA 3");
                 }
                 else if (this.servidor.espie() instanceof Ataque)
                 {

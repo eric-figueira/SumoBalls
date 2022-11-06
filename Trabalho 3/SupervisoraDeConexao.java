@@ -23,6 +23,7 @@ public class SupervisoraDeConexao extends Thread
 
     public void run () 
     {
+
         ObjectOutputStream transmissor;
         try 
         {
@@ -68,26 +69,28 @@ public class SupervisoraDeConexao extends Thread
 
             for (;;) 
             {
+                Cliente.Janela.MostrarMensagemDeErro("2");
                 Comunicado comunicado = this.usuario.envie ();
 
                 if (comunicado==null)
                     return;
 
+                Cliente.Janela.MostrarMensagemDeErro("RECEBI UM COMUNICADO");
                 if (comunicado instanceof Ataque)
                 {
-                    Ataque ataq = (Ataque) usuario.envie();
+                    Ataque ataq = (Ataque) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(ataq);
                 }
                 else if (comunicado instanceof Movimentacao) 
                 {
-                    Movimentacao  mov = (Movimentacao) usuario.envie();
+                    Movimentacao  mov = (Movimentacao) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(mov);
                 }
                 else if (comunicado instanceof Rotacao) 
                 {
-                    Rotacao rot = (Rotacao) usuario.envie();
+                    Rotacao rot = (Rotacao) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(rot);
                 }
@@ -110,9 +113,7 @@ public class SupervisoraDeConexao extends Thread
                 receptor   .close ();
             }
             catch (Exception err)
-            {} 
-
-            return;
+            {}
         }
     }
 }
