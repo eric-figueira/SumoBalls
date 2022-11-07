@@ -160,10 +160,12 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'N';
+                player1y -= ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
-                dirPlayer1 = 'N';
+                dirPlayer2 = 'N';
+                player2y -= ESCALA_MOVIMENTACAO / 2;
             }
         }
         else if (direcaoRotacao == 'S')
@@ -171,21 +173,25 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'S';
+                player1y += ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
-                dirPlayer1 = 'S';
+                dirPlayer2 = 'S';
+                player2y += ESCALA_MOVIMENTACAO / 2;
             }
         }
         else if (direcaoRotacao == 'O')
         {
             if (playerRotante == 'A')
             {
-                dirPlayer1 = 'O';
+                dirPlayer2 = 'O';
+                player1x -= ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
-                dirPlayer1 = 'O';
+                dirPlayer2 = 'O';
+                player2x -= ESCALA_MOVIMENTACAO / 2;
             }
         }
         else if (direcaoRotacao == 'L')
@@ -193,10 +199,12 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'L';
+                player1x += ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
                 dirPlayer1 = 'L';
+                player2x += ESCALA_MOVIMENTACAO / 2;
             }
         }
 
