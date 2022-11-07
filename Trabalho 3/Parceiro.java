@@ -31,7 +31,6 @@ public class Parceiro
         {
             transmissor.writeObject(x);
             transmissor.flush();
-            Cliente.Janela.MostrarMensagemDeErro("MANDEI PARA O PARCEIRO");
         }
         catch (IOException erro) { throw new IOException("Erro na transmissão"); }
     }

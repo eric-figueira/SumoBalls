@@ -64,45 +64,43 @@ public class SupervisoraDeConexao extends Thread
             {
                 this.usuarios.add(usuario);
                 Cliente.setPlayer(this.usuarios.indexOf(usuario));
-            }
 
+                for (;;)
+                {
+                    Cliente.Janela.MostrarMensagemDeErro("2");
+                    Comunicado comunicado = this.usuario.envie ();
 
-            for (;;) 
-            {
-                Cliente.Janela.MostrarMensagemDeErro("2");
-                Comunicado comunicado = this.usuario.envie ();
+                    if (comunicado==null)
+                        return;
 
-                if (comunicado==null)
-                    return;
-
-                Cliente.Janela.MostrarMensagemDeErro("RECEBI UM COMUNICADO");
-                if (comunicado instanceof Rotacao)
-                {
-                    Rotacao rot = (Rotacao) comunicado;
-                    for (Parceiro parceiro : usuarios)
-                        parceiro.receba(rot);
-                }
-                else if (comunicado instanceof Movimentacao) 
-                {
-                    Movimentacao  mov = (Movimentacao) comunicado;
-                    for (Parceiro parceiro : usuarios)
-                        parceiro.receba(mov);
-                }
-                else if (comunicado instanceof Ataque)
-                {
-                    Ataque atq = (Ataque) comunicado;
-                    for (Parceiro parceiro : usuarios)
-                        parceiro.receba(atq);
-                }
-                else if (comunicado instanceof PedidoParaSair) 
-                {
-                    synchronized (usuarios) 
+                    Cliente.Janela.MostrarMensagemDeErro("RECEBI UM COMUNICADO");
+                    if (comunicado instanceof Rotacao)
                     {
-                        usuarios.remove(usuario);
+                        Rotacao rot = (Rotacao) comunicado;
+                        for (Parceiro parceiro : usuarios)
+                            parceiro.receba(rot);
                     }
-                    this.usuario.adeus();
+                    else if (comunicado instanceof Movimentacao)
+                    {
+                        Movimentacao  mov = (Movimentacao) comunicado;
+                        for (Parceiro parceiro : usuarios)
+                            parceiro.receba(mov);
+                    }
+                    else if (comunicado instanceof Ataque)
+                    {
+                        Ataque atq = (Ataque) comunicado;
+                        for (Parceiro parceiro : usuarios)
+                            parceiro.receba(atq);
+                    }
+                    else if (comunicado instanceof PedidoParaSair)
+                    {
+                        synchronized (usuarios)
+                        {
+                            usuarios.remove(usuario);
+                        }
+                        this.usuario.adeus();
+                    }
                 }
-
             }
         }
         catch (Exception erro)

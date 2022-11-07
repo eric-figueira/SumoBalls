@@ -43,7 +43,6 @@ public class Cliente
 
     static Janela janela = null;
 
-
     public static void main (String args[])
     {
         if (args.length > 2)
@@ -216,15 +215,15 @@ public class Cliente
 
 
     public static class Janela extends JFrame
-    {   
+    {
         static JLayeredPane fundo;
 
-        public Janela () 
+        public Janela ()
         {
             super("SumoBalls");
-            
+
             this.setLayout(null);
-            
+
             JLabel titulo = new JLabel("SumoBalls");
             titulo.setBounds(225, 30, 300, 50);
             titulo.setForeground(Color.ORANGE);
@@ -235,12 +234,12 @@ public class Cliente
             ringue.setBackground(Color.LIGHT_GRAY);
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
-            
+
             imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 92, 92);
 
-            
+
             imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 92, 92);
@@ -267,8 +266,8 @@ public class Cliente
         {
             player1.setBounds(player1x, player1y, 92, 92);
             player2.setBounds(player2x, player2y, 92, 92);
-            //player1 = new JLabel(imgPlayer1);
-            //player2 = new JLabel(imgPlayer2);
+            player1 = new JLabel(imgPlayer1);
+            player2 = new JLabel(imgPlayer2);
 
             try
             {
@@ -290,13 +289,13 @@ public class Cliente
         }
 
 
-        class FechamentoDeJanela extends WindowAdapter {
+        static class FechamentoDeJanela extends WindowAdapter {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         }
 
-        class keyHandler implements KeyListener  {
+        static class keyHandler implements KeyListener  {
             @Override
             public void keyReleased(KeyEvent e)
             {
