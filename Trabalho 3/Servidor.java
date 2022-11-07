@@ -3,7 +3,7 @@ import java.util.*;
 public class Servidor {
     public static final String PORTA_PADRAO = "3000";
 
-    public static void main (String args[]){
+    public static void main (String[] args){
         if (args.length > 1)
         {
             System.out.print("Uso esperado: java Servidor [PORTA]\n");
@@ -44,20 +44,20 @@ public class Servidor {
             }
             catch (Exception err)
             {}
-            if (comandoDigitado.toLowerCase().equals("desativar")) 
+            if (comandoDigitado.toLowerCase().equals("desativar"))
             {
-                synchronized (usuarios) 
+                synchronized (usuarios)
                 {
                     ComunicadoDeDesligamento comunicadoDeDesligamento = new ComunicadoDeDesligamento();
 
-                    for (Parceiro parceiro:usuarios) 
+                    for (Parceiro parceiro:usuarios)
                     {
-                        try 
+                        try
                         {
                             parceiro.receba(comunicadoDeDesligamento);
                             parceiro.adeus();
                         }
-                        catch (Exception erro) 
+                        catch (Exception erro)
                         {}
                     }
 
@@ -65,7 +65,7 @@ public class Servidor {
                     System.exit(0);
                 }
             }
-            else 
+            else
             {
                 System.out.print("Comando inválido!\n");
             }
