@@ -7,14 +7,17 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
 
     public TratadoraDeComunicadoDeDesligamento(Parceiro servidor) throws Exception
     {
+        System.out.println("A");
         if (servidor == null)
             throw new Exception("Porta inválida!");
 
+        System.out.println("B");
         this.servidor = servidor;
     }
 
     public void run()
     {
+        System.out.println("C");
         for (;;)
         {
             try 

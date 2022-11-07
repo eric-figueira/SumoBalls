@@ -23,7 +23,7 @@ public class SupervisoraDeConexao extends Thread
 
     public void run () 
     {
-
+        Cliente.Janela.MostrarMensagemDeErro("run da supervisoraDeConexao");
         ObjectOutputStream transmissor;
         try 
         {
@@ -67,42 +67,41 @@ public class SupervisoraDeConexao extends Thread
             }
 
 
-            for (;;) 
+            for (;;)
             {
-                Cliente.Janela.MostrarMensagemDeErro("2");
-                Comunicado comunicado = this.usuario.envie ();
+                synchronized (usuarios)
+                {
+                    // Cliente.Janela.MostrarMensagemDeErro("2");
+                    Comunicado comunicado = this.usuario.envie();
 
-                if (comunicado==null)
-                    return;
+                    if (comunicado == null)
+                        return;
 
-                Cliente.Janela.MostrarMensagemDeErro("RECEBI UM COMUNICADO");
-                if (comunicado instanceof Rotacao)
-                {
-                    Rotacao rot = (Rotacao) comunicado;
-                    for (Parceiro parceiro : usuarios)
-                        parceiro.receba(rot);
-                }
-                else if (comunicado instanceof Movimentacao) 
-                {
-                    Movimentacao  mov = (Movimentacao) comunicado;
-                    for (Parceiro parceiro : usuarios)
-                        parceiro.receba(mov);
-                }
-                else if (comunicado instanceof Ataque)
-                {
-                    Ataque atq = (Ataque) comunicado;
-                    for (Parceiro parceiro : usuarios)
-                        parceiro.receba(atq);
-                }
-                else if (comunicado instanceof PedidoParaSair) 
-                {
-                    synchronized (usuarios) 
+                    // Cliente.Janela.MostrarMensagemDeErro("RECEBI UM COMUNICADO");
+                    if (comunicado instanceof Rotacao)
+                    {
+                        Rotacao rot = (Rotacao) comunicado;
+                        for (Parceiro parceiro : usuarios)
+                            parceiro.receba(rot);
+                    }
+                    else if (comunicado instanceof Movimentacao)
+                    {
+                        Movimentacao mov = (Movimentacao) comunicado;
+                        for (Parceiro parceiro : usuarios)
+                            parceiro.receba(mov);
+                    }
+                    else if (comunicado instanceof Ataque)
+                    {
+                        Ataque atq = (Ataque) comunicado;
+                        for (Parceiro parceiro : usuarios)
+                            parceiro.receba(atq);
+                    }
+                    else if (comunicado instanceof PedidoParaSair)
                     {
                         usuarios.remove(usuario);
+                        this.usuario.adeus();
                     }
-                    this.usuario.adeus();
                 }
-
             }
         }
         catch (Exception erro)

@@ -46,15 +46,18 @@ public class Cliente
 
     public static void main (String args[])
     {
+        System.out.println("d");
         if (args.length > 2)
         {
             System.err.println("Uso esperado: java Cliente [HOST [PORTA]]\n");
             return;
         }
 
+        System.out.println("e");
         Socket conexao = null;
         ObjectOutputStream transmissor = null;
-        ObjectInputStream receptor = null;  
+        ObjectInputStream receptor = null;
+        System.out.println("f");
        
         try
         {
@@ -67,26 +70,43 @@ public class Cliente
             if (args.length == 2)
                 porta = Integer.parseInt(args[1]);
 
+            System.out.println("g");
             conexao = new Socket(host, porta);
+            System.out.println("k");
             transmissor = new ObjectOutputStream(conexao.getOutputStream());
+            System.out.println("i");
             receptor = new ObjectInputStream(conexao.getInputStream());
+            System.out.println("j");
             servidor = new Parceiro(conexao, receptor, transmissor);
+            System.out.println("h");
         }
+
         catch (Exception erro) { System.out.println("Indique o servidor e a porta corretos!"); }
 
+
+        System.out.println("0");
         TratadoraDeComunicadoDeDesligamento tratadoraDeComunicadoDeDesligamento = null;
+        System.out.println("1");
         TratadoraJogador tratadoraJogador = null;
+        System.out.println("2");
+
 
         try
         {
+            System.out.println("AQUI QUE DA MERDA NÉ");
             tratadoraDeComunicadoDeDesligamento = new TratadoraDeComunicadoDeDesligamento(servidor);
+            System.out.println("3");
             tratadoraJogador = new TratadoraJogador(servidor);
+            System.out.println("4");
         }
         catch (Exception erro)
         {}
 
+
         tratadoraDeComunicadoDeDesligamento.start();
+        System.out.println("5");
         tratadoraJogador.start();
+        System.out.println("6");
 
         janela = new Janela();
     }
@@ -155,16 +175,20 @@ public class Cliente
 
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
-        Cliente.Janela.MostrarMensagemDeErro("UMA ROTACAO ESTA ACONTECENDO");
+        // Cliente.Janela.MostrarMensagemDeErro("UMA ROTACAO ESTA ACONTECENDO");
         if (direcaoRotacao == 'N')
         {
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'N';
+                player1y -= ESCALA_MOVIMENTACAO / 2;
+                imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_N.png")));
             }
             if (playerRotante == 'L')
             {
-                dirPlayer1 = 'N';
+                dirPlayer2 = 'N';
+                player2y -= ESCALA_MOVIMENTACAO / 2;
+                imgPlayer2 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_2_N.png")));
             }
         }
         else if (direcaoRotacao == 'S')
@@ -172,10 +196,14 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'S';
+                player1y += ESCALA_MOVIMENTACAO / 2;
+                imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_S.png")));
             }
             if (playerRotante == 'L')
             {
-                dirPlayer1 = 'S';
+                dirPlayer2 = 'S';
+                player2y += ESCALA_MOVIMENTACAO / 2;
+                imgPlayer2 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_2_S.png")));
             }
         }
         else if (direcaoRotacao == 'O')
@@ -183,10 +211,15 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'O';
+                player1x -= ESCALA_MOVIMENTACAO / 2;
+                imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_O.png")));
+
             }
             if (playerRotante == 'L')
             {
-                dirPlayer1 = 'O';
+                dirPlayer2 = 'O';
+                player2x -= ESCALA_MOVIMENTACAO / 2;
+                imgPlayer2 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_2_O.png")));
             }
         }
         else if (direcaoRotacao == 'L')
@@ -194,10 +227,14 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'L';
+                player1x += ESCALA_MOVIMENTACAO / 2;
+                imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_L.png")));
             }
             if (playerRotante == 'L')
             {
-                dirPlayer1 = 'L';
+                dirPlayer2 = 'L';
+                player2x += ESCALA_MOVIMENTACAO / 2;
+                imgPlayer2 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_2_L.png")));
             }
         }
 
@@ -211,8 +248,15 @@ public class Cliente
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
         Cliente.Janela.MostrarMensagemDeErro("UM ATAQUE ESTA ACONTECENDO");
-    }
+        if (playerAtacante == 'A')
+        {
 
+        }
+        else if (playerAtacante == 'L')
+        {
+
+        }
+    }
 
 
     public static class Janela extends JFrame
@@ -267,8 +311,8 @@ public class Cliente
         {
             player1.setBounds(player1x, player1y, 92, 92);
             player2.setBounds(player2x, player2y, 92, 92);
-            //player1 = new JLabel(imgPlayer1);
-            //player2 = new JLabel(imgPlayer2);
+            player1 = new JLabel(imgPlayer1);
+            player2 = new JLabel(imgPlayer2);
 
             try
             {
@@ -290,8 +334,12 @@ public class Cliente
         }
 
 
-        class FechamentoDeJanela extends WindowAdapter {
-            public void windowClosing(WindowEvent e) {
+        class FechamentoDeJanela extends WindowAdapter
+        {
+            public void windowClosing(WindowEvent e)
+            {
+                try { servidor.receba(new PedidoParaSair()); }
+                catch (Exception err) {}
                 System.exit(0);
             }
         }
