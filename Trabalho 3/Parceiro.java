@@ -41,6 +41,7 @@ public class Parceiro
     {
         try
         {
+            semaforo.acquireUninterruptibly();
             if (this.proximoComunicado == null) 
                 this.proximoComunicado = (Comunicado) receptor.readObject();
             semaforo.release();
