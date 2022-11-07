@@ -76,11 +76,11 @@ public class SupervisoraDeConexao extends Thread
                     return;
 
                 Cliente.Janela.MostrarMensagemDeErro("RECEBI UM COMUNICADO");
-                if (comunicado instanceof Ataque)
+                if (comunicado instanceof Rotacao)
                 {
-                    Ataque ataq = (Ataque) comunicado;
+                    Rotacao rot = (Rotacao) comunicado;
                     for (Parceiro parceiro : usuarios)
-                        parceiro.receba(ataq);
+                        parceiro.receba(rot);
                 }
                 else if (comunicado instanceof Movimentacao) 
                 {
@@ -88,11 +88,11 @@ public class SupervisoraDeConexao extends Thread
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(mov);
                 }
-                else if (comunicado instanceof Rotacao) 
+                else if (comunicado instanceof Ataque)
                 {
-                    Rotacao rot = (Rotacao) comunicado;
+                    Ataque atq = (Ataque) comunicado;
                     for (Parceiro parceiro : usuarios)
-                        parceiro.receba(rot);
+                        parceiro.receba(atq);
                 }
                 else if (comunicado instanceof PedidoParaSair) 
                 {
