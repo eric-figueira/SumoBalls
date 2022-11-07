@@ -29,6 +29,7 @@ public class Parceiro
     {
         try 
         {
+            Cliente.Janela.MostrarMensagemDeErro("Erro!");
             transmissor.writeObject(x);
             transmissor.flush();
         }

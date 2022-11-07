@@ -21,8 +21,8 @@ public class TratadoraDeComunicadoDeDesligamento extends Thread
             {
                 if (this.servidor.espie() instanceof ComunicadoDeDesligamento)
                 {
-                    Cliente.Janela.MostrarMensagemDeErro("O servidor será desativado em breve. " +
-                            "Volte a tentar novamente mais tarde!");
+                    //Cliente.Janela.MostrarMensagemDeErro("O servidor será desativado em breve. " +
+                            //"Volte a tentar novamente mais tarde!");
                     System.exit(0);
                 }
             }

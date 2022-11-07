@@ -120,7 +120,7 @@ public class Cliente
         Janela.MostrarMensagemDeErro("INDEX: " + index);
         if (index == 0)      { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
         else if (index == 1) { playerControlante = 'L'; direcaoPlayerControlante = 'S';}
-        else throw new Exception("Index out of range");
+        else Janela.MostrarMensagemDeErro("Já há dois jogadores nessa partida!");
         Janela.MostrarMensagemDeErro(playerControlante+"");
         Janela.MostrarMensagemDeErro(direcaoPlayerControlante+"");
     } 
@@ -215,9 +215,58 @@ public class Cliente
     }
 
 
-    public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
-    {
-        Cliente.Janela.MostrarMensagemDeErro("UM ATAQUE ESTA ACONTECENDO");
+    public static void realizarAtaque(char playerAtacante, char direcaoAtaque) throws InterruptedException {
+        byte tamanho = 92;
+        char playerAtacado = 'L';
+        if (playerAtacante == 'L')
+            playerAtacado = 'A';
+
+        if (direcaoAtaque == 'N')
+        {
+            if ((player1x + tamanho/4) <= player2x && (player1x + 3*tamanho/4) >= player2x)
+            {
+                if (player2y - player1y <= tamanho)
+                {
+                    Janela.moverBastao(playerAtacante, direcaoAtaque);
+                    realizarMovimentacao(playerAtacado, 'N');
+                }
+            }
+        }
+        else if (direcaoAtaque == 'S')
+        {
+            if ((player1x + tamanho/4) <= player2x && (player1x + 3*tamanho/4) >= player2x)
+            {
+                if (player1y - player2y <= tamanho)
+                {
+                    Janela.moverBastao(playerAtacante, direcaoAtaque);
+                    realizarMovimentacao(playerAtacado, 'N');
+                }
+            }
+        }
+        else if (direcaoAtaque == 'L')
+        {
+            if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
+            {
+                if (player1x - player2x <= tamanho)
+                {
+                    Janela.moverBastao(playerAtacante, direcaoAtaque);
+                    realizarMovimentacao(playerAtacado, 'N');
+                }
+            }
+        }
+        else if (direcaoAtaque == 'O')
+        {
+            if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
+            {
+                if (player2x - player1x <= tamanho)
+                {
+                    Janela.moverBastao(playerAtacante, direcaoAtaque);
+                    realizarMovimentacao(playerAtacado, 'N');
+                }
+            }
+        }
+
+        Janela.AtualizarTela();
     }
 
 
@@ -288,6 +337,72 @@ public class Cliente
             catch (Exception erro)
             {
                 MostrarMensagemDeErro(erro.getMessage());
+            }
+        }
+
+        public static void moverBastao (char playerAtacante, char direcaoAtaque) throws InterruptedException
+        {
+            if (playerAtacante == 'A')
+            {
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
+            }
+            else if (playerAtacante == 'L')
+            {
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
+                if (direcaoAtaque == 'N')
+                {
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                    Janela.AtualizarTela();
+                    Thread.sleep(700);
+                    imgPlayer1 = new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png")));
+                }
             }
         }
 
