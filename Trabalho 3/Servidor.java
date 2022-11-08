@@ -46,6 +46,7 @@ public class Servidor {
             {}
             if (comandoDigitado.toLowerCase().equals("desativar"))
             {
+                Cliente.Janela.MostrarMensagemDeErro("ESTAMOS DESATIVANDO");
                 synchronized (usuarios)
                 {
                     ComunicadoDeDesligamento comunicadoDeDesligamento = new ComunicadoDeDesligamento();
@@ -54,6 +55,7 @@ public class Servidor {
                     {
                         try
                         {
+                            Cliente.Janela.MostrarMensagemDeErro("ESTAMOS FALANDO");
                             parceiro.receba(comunicadoDeDesligamento);
                             parceiro.adeus();
                         }
