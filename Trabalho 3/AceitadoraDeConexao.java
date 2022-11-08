@@ -38,6 +38,7 @@ public class AceitadoraDeConexao extends Thread
             }
             catch (Exception erro) 
             {
+                erro.printStackTrace();
                 continue;
             }
 
@@ -48,7 +49,7 @@ public class AceitadoraDeConexao extends Thread
                 supervisoraDeConexao = new SupervisoraDeConexao (conexao, usuarios);
             }
             catch (Exception erro) 
-            {}
+            { }
 
             supervisoraDeConexao.start();
         }

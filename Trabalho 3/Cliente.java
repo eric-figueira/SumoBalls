@@ -116,12 +116,9 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
-        Janela.MostrarMensagemDeErro("INDEX: " + index);
         if (index == 0)      { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
         else if (index == 1) { playerControlante = 'L'; direcaoPlayerControlante = 'S';}
         else Janela.MostrarMensagemDeErro("Já há dois jogadores nessa partida!");
-        Janela.MostrarMensagemDeErro(playerControlante+"");
-        Janela.MostrarMensagemDeErro(direcaoPlayerControlante+"");
     } 
 
     public static void realizarMovimentacao(char playerMovimentante, char direcaoMovimento)
@@ -404,6 +401,10 @@ public class Cliente
 
         static class FechamentoDeJanela extends WindowAdapter {
             public void windowClosing(WindowEvent e) {
+                try {
+                    servidor.receba(new PedidoParaSair());
+                }
+                catch (Exception erro) { }
                 System.exit(0);
             }
         }

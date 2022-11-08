@@ -46,7 +46,7 @@ public class SupervisoraDeConexao extends Thread
                 transmissor.close();
             }
             catch (Exception falha)
-            {} 
+            {}
             
             return;
         }
@@ -60,14 +60,12 @@ public class SupervisoraDeConexao extends Thread
 
         try 
         {
-            synchronized (usuarios) 
-            {
+            synchronized (usuarios) {
                 this.usuarios.add(usuario);
                 Cliente.setPlayer(this.usuarios.indexOf(usuario));
 
                 for (;;)
                 {
-                    Cliente.Janela.MostrarMensagemDeErro("2");
                     Comunicado comunicado = this.usuario.envie ();
 
                     if (comunicado==null)
@@ -94,10 +92,8 @@ public class SupervisoraDeConexao extends Thread
                     }
                     else if (comunicado instanceof PedidoParaSair)
                     {
-                        synchronized (usuarios)
-                        {
-                            usuarios.remove(usuario);
-                        }
+
+                        usuarios.remove(usuario);
                         this.usuario.adeus();
                     }
                 }

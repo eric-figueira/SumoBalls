@@ -69,7 +69,6 @@ public class Parceiro
 
     public void adeus () throws Exception
     {
-        Cliente.Janela.MostrarMensagemDeErro("ESTAMOS DESATIVANDO");
         try 
         {
             conexao.close();
