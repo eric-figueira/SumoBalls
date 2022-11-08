@@ -4,13 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import javax.swing.*;
 
 public class Cliente
 {
     // Parte do Socket
-    public static final String HOST_PADRAO = "localhost";
-    public static final int PORTA_PADRAO = 3000;
+    private static final String HOST_PADRAO = "localhost";
+    private static final int PORTA_PADRAO = 3000;
     private static Parceiro servidor = null; 
 
 
@@ -43,7 +42,7 @@ public class Cliente
 
     static Janela janela = null;
 
-    public static void main (String args[])
+    public static void main (String[] args)
     {
         if (args.length > 2)
         {
