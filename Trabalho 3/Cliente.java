@@ -154,8 +154,6 @@ public class Cliente
     }
 
 
-
-    //imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_N.png")));
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
         //Cliente.Janela.MostrarMensagemDeErro("RECEBEU ROTACAO DE " + playerRotante);
@@ -266,6 +264,12 @@ public class Cliente
                     realizarMovimentacao(playerAtacado, 'N');
             }
         }
+
+        try
+        {
+            Cliente.moverBastao(playerAtacante, direcaoAtaque);
+        }
+        catch (Exception erro) {}
     }
 
     public static void moverBastao (char playerAtacante, char direcaoAtaque) throws InterruptedException
@@ -437,7 +441,7 @@ public class Cliente
         }
 
 
-        class FechamentoDeJanela extends WindowAdapter {
+        static class FechamentoDeJanela extends WindowAdapter {
             public void windowClosing(WindowEvent e) {
                 try
                 {
@@ -448,7 +452,7 @@ public class Cliente
             }
         }
 
-        class keyHandler extends KeyAdapter  {
+        static class keyHandler extends KeyAdapter  {
             public void keyPressed(KeyEvent e) {
                 try
                 {
