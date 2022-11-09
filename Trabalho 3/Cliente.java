@@ -13,6 +13,7 @@ public class Cliente
     public static final int PORTA_PADRAO = 3000;
     private static Parceiro servidor = null; 
 
+    private static final byte tamanho = 92;
 
     // Criacao dos jogadores
     private static JLabel player1 = null;
@@ -228,10 +229,109 @@ public class Cliente
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
+        char playerAtacado = 'L';
+        if (playerAtacante == 'L')
+            playerAtacado = 'A';
 
+        if (direcaoAtaque == 'N')
+        {
+            if ((player1x + tamanho/4) <= player2x && (player1x + 3*tamanho/4) >= player2x)
+            {
+                if (Math.abs(player2y - player1y) <= tamanho)
+                    realizarMovimentacao(playerAtacado, 'N');
+            }
+        }
+        else if (direcaoAtaque == 'S')
+        {
+            if ((player1x + tamanho/4) <= player2x && (player1x + 3*tamanho/4) >= player2x)
+            {
+                if (Math.abs(player1y - player2y) <= tamanho)
+                    realizarMovimentacao(playerAtacado, 'N');
+            }
+        }
+        else if (direcaoAtaque == 'L')
+        {
+            if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
+            {
+                if (Math.abs(player1x - player2x) <= tamanho)
+                    realizarMovimentacao(playerAtacado, 'N');
+            }
+        }
+        else if (direcaoAtaque == 'O')
+        {
+            if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
+            {
+                if (Math.abs(player2x - player1x) <= tamanho)
+                    realizarMovimentacao(playerAtacado, 'N');
+            }
+        }
     }
 
-
+    public static void moverBastao (char playerAtacante, char direcaoAtaque) throws InterruptedException
+    {
+        if (playerAtacante == 'A')
+        {
+            if (direcaoAtaque == 'N')
+            {
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N_ataque.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
+            }
+            if (direcaoAtaque == 'S')
+            {
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S_ataque.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
+            }
+            if (direcaoAtaque == 'L')
+            {
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L_ataque.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
+            }
+            if (direcaoAtaque == 'O')
+            {
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O_ataque.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
+            }
+        }
+        else if (playerAtacante == 'L')
+        {
+            if (direcaoAtaque == 'N')
+            {
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+            }
+            if (direcaoAtaque == 'S')
+            {
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+            }
+            if (direcaoAtaque == 'L')
+            {
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+            }
+            if (direcaoAtaque == 'O')
+            {
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                Janela.AtualizarTela();
+                Thread.sleep(700);
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+            }
+        }
+    }
 
     public static class Janela extends JFrame
     {   
