@@ -3,7 +3,8 @@ import java.util.*;
 public class Servidor {
     public static final String PORTA_PADRAO = "3000";
 
-    public static void main (String args[]){
+    public static void main (String args[])
+    {
         if (args.length > 1)
         {
             System.out.print("Uso esperado: java Servidor [PORTA]\n");

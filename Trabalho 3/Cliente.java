@@ -229,6 +229,7 @@ public class Cliente
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
+        Cliente.Janela.MostrarMensagemDeErro(playerAtacante + " ATACOU");
         char playerAtacado = 'L';
         if (playerAtacante == 'L')
             playerAtacado = 'A';
@@ -333,9 +334,12 @@ public class Cliente
         }
     }
 
+
     public static class Janela extends JFrame
     {   
         static JLayeredPane fundo;
+        static JLabel ganhou;
+        static JLabel perdeu;
 
         public Janela () 
         {
@@ -347,6 +351,19 @@ public class Cliente
             titulo.setBounds(225, 30, 300, 50);
             titulo.setForeground(Color.ORANGE);
             titulo.setFont(new Font("Monospace", Font.BOLD, 50));
+
+            perdeu = new JLabel("Perdeu!");
+            perdeu.setBounds(210, 275, 400, 75);
+            perdeu.setForeground(Color.RED);
+            perdeu.setFont(new Font("Monospace", Font.BOLD, 75));
+            perdeu.setVisible(false);
+
+            ganhou = new JLabel("Ganhou!");
+            ganhou.setBounds(210, 275, 400, 75);
+            ganhou.setForeground(Color.GREEN);
+            ganhou.setFont(new Font("Monospace", Font.BOLD, 75));
+            ganhou.setVisible(false);
+
 
             JPanel ringue = new JPanel();
             ringue.setBounds(150, 150, 400, 400);
@@ -366,6 +383,8 @@ public class Cliente
             fundo = new JLayeredPane();
             fundo.setSize(600, 600);
             fundo.add(titulo, 2);
+            fundo.add(ganhou,0);
+            fundo.add(perdeu, 0);
             fundo.add(ringue, 2);
             fundo.add(player1, 1);
             fundo.add(player2, 1);
@@ -381,18 +400,29 @@ public class Cliente
             this.setResizable(false);
         }
 
+        public static void comunicarVitoria(char playerVencedor)
+        {
+            if (playerVencedor == playerControlante)
+            {
+                ganhou.setVisible(true);
+            }
+            else
+            {
+                perdeu.setVisible(true);
+            }
+        }
+
         public static void AtualizarTela()
         {
             player1.setBounds(player1x, player1y, 92, 92);
             player2.setBounds(player2x, player2y, 92, 92);
 
-
             try
             {
-                if (player1x <= 92 || player1x >= 550 || player1y >= 550 || player1y <= 92)
+                if (player1x <= 58 || player1x >= 550 || player1y >= 550 || player1y <= 58)
                     servidor.receba(new ComunicadoDeVitoria('L'));
 
-                if (player2x <= 92 || player2x >= 550 || player2y >= 550 || player2y <= 92)
+                if (player2x <= 58 || player2x >= 550 || player2y >= 550 || player2y <= 58)
                     servidor.receba(new ComunicadoDeVitoria('A'));
             }
             catch (Exception erro)

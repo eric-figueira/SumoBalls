@@ -34,6 +34,11 @@ public class TratadoraJogador extends Thread
                     Ataque ataque = (Ataque) servidor.envie();
                     Cliente.realizarAtaque(ataque.getPlayerAtacante(),ataque.getDirecaoDoAtaque());
                 }
+                else if (this.servidor.espie() instanceof ComunicadoDeVitoria)
+                {
+                    ComunicadoDeVitoria cv = (ComunicadoDeVitoria) servidor.envie();
+                    Cliente.Janela.comunicarVitoria(cv.getPlayerVencedor());
+                }
             }
             catch (Exception erro)
             {
