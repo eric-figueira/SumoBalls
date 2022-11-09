@@ -307,28 +307,28 @@ public class Cliente
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
                 Janela.AtualizarTela();
                 Thread.sleep(700);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S_ataque.png"))));
                 Janela.AtualizarTela();
                 Thread.sleep(700);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L_ataque.png"))));
                 Janela.AtualizarTela();
                 Thread.sleep(700);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O_ataque.png"))));
                 Janela.AtualizarTela();
                 Thread.sleep(700);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
     }
@@ -385,8 +385,7 @@ public class Cliente
         {
             player1.setBounds(player1x, player1y, 92, 92);
             player2.setBounds(player2x, player2y, 92, 92);
-            //player1 = new JLabel(imgPlayer1);
-            //player2 = new JLabel(imgPlayer2);
+
 
             try
             {
