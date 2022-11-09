@@ -164,11 +164,13 @@ public class Cliente
             {
                 dirPlayer1 = 'N';
                 player1y -= ESCALA_MOVIMENTACAO / 2;
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'N';
                 player2y -= ESCALA_MOVIMENTACAO / 2;
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
         }
         else if (direcaoRotacao == 'S')
@@ -177,11 +179,13 @@ public class Cliente
             {
                 dirPlayer1 = 'S';
                 player1y += ESCALA_MOVIMENTACAO / 2;
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'S';
                 player2y += ESCALA_MOVIMENTACAO / 2;
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
         }
         else if (direcaoRotacao == 'O')
@@ -190,11 +194,13 @@ public class Cliente
             {
                 dirPlayer1 = 'O';
                 player1x -= ESCALA_MOVIMENTACAO / 2;
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'O';
                 player2x -= ESCALA_MOVIMENTACAO / 2;
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
             }
         }
         else if (direcaoRotacao == 'L')
@@ -203,11 +209,13 @@ public class Cliente
             {
                 dirPlayer1 = 'L';
                 player1x += ESCALA_MOVIMENTACAO / 2;
+                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'L';
-                player1x += ESCALA_MOVIMENTACAO / 2;
+                player2x += ESCALA_MOVIMENTACAO / 2;
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
         }
 
