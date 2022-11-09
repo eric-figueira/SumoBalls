@@ -227,7 +227,7 @@ public class Cliente
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
-        Cliente.Janela.MostrarMensagemDeErro(playerAtacante + " ATACOU");
+        //Cliente.Janela.MostrarMensagemDeErro(playerAtacante + " ATACOU");
         char playerAtacado = 'L';
         if (playerAtacante == 'L')
             playerAtacado = 'A';
@@ -245,7 +245,7 @@ public class Cliente
             if ((player1x + tamanho/4) <= player2x && (player1x + 3*tamanho/4) >= player2x)
             {
                 if (Math.abs(player1y - player2y) <= tamanho)
-                    realizarMovimentacao(playerAtacado, 'N');
+                    realizarMovimentacao(playerAtacado, 'S');
             }
         }
         else if (direcaoAtaque == 'L')
@@ -253,7 +253,7 @@ public class Cliente
             if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
                 if (Math.abs(player1x - player2x) <= tamanho)
-                    realizarMovimentacao(playerAtacado, 'N');
+                    realizarMovimentacao(playerAtacado, 'L');
             }
         }
         else if (direcaoAtaque == 'O')
@@ -261,7 +261,7 @@ public class Cliente
             if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
                 if (Math.abs(player2x - player1x) <= tamanho)
-                    realizarMovimentacao(playerAtacado, 'N');
+                    realizarMovimentacao(playerAtacado, '0');
             }
         }
 
@@ -274,34 +274,35 @@ public class Cliente
 
     public static void moverBastao (char playerAtacante, char direcaoAtaque) throws InterruptedException
     {
+        int delay = 50;
         if (playerAtacante == 'A')
         {
             if (direcaoAtaque == 'N')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
         }
@@ -311,28 +312,28 @@ public class Cliente
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O_ataque.png"))));
                 Janela.AtualizarTela();
-                Thread.sleep(700);
+                Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
@@ -447,7 +448,9 @@ public class Cliente
                 {
                     servidor.receba(new PedidoParaSair());
                 }
-                catch (Exception erro) {}
+                catch (Exception erro) {
+                    erro.printStackTrace();
+                }
                 System.exit(0);
             }
         }
