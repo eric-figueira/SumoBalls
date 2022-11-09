@@ -75,19 +75,19 @@ public class SupervisoraDeConexao extends Thread
 
                 if (comunicado instanceof Ataque)
                 {
-                    Ataque ataq = (Ataque) usuario.envie();
+                    Ataque ataq = (Ataque) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(ataq);
                 }
                 else if (comunicado instanceof Movimentacao) 
                 {
-                    Movimentacao  mov = (Movimentacao) usuario.envie();
+                    Movimentacao  mov = (Movimentacao) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(mov);
                 }
                 else if (comunicado instanceof Rotacao) 
                 {
-                    Rotacao rot = (Rotacao) usuario.envie();
+                    Rotacao rot = (Rotacao) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(rot);
                 }
@@ -110,8 +110,8 @@ public class SupervisoraDeConexao extends Thread
                 receptor   .close ();
             }
             catch (Exception err)
-            {} 
-
+            {}
+            erro.printStackTrace();
             return;
         }
     }

@@ -39,7 +39,7 @@ public class Cliente
     private static final int ESCALA_MOVIMENTACAO = 20;
 
     private static char playerControlante = 'A';
-    private static char direcaoPlayerControlante;
+    private static char direcaoPlayerControlante = 'N';
 
     static Janela janela = null;
 
@@ -102,8 +102,12 @@ public class Cliente
     public static void mandarRotacao(char playerRotante, char direcaoRotacao)
     {
         //Janela.MostrarMensagemDeErro(playerRotante+":"+direcaoPlayerControlante+":"+direcaoRotacao);
+
         try { servidor.receba(new Rotacao(playerRotante, direcaoRotacao)); }
-        catch (Exception erro) {}
+        catch (Exception erro)
+        {
+            erro.printStackTrace();
+        }
     }
 
 
@@ -123,6 +127,7 @@ public class Cliente
 
     public static void realizarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
+        //Cliente.Janela.MostrarMensagemDeErro("RECEBEU MOVIMENTACAO DE " + playerMovimentante);
         if (direcaoMovimento == 'N')
         {
             if (playerMovimentante == 'A') player1y -= ESCALA_MOVIMENTACAO;
@@ -147,53 +152,67 @@ public class Cliente
         Janela.AtualizarTela();
     }
 
+
+
     //imgPlayer1 = new ImageIcon(Objects.requireNonNull(Cliente.class.getResource("Imagens/player_1_N.png")));
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
+        //Cliente.Janela.MostrarMensagemDeErro("RECEBEU ROTACAO DE " + playerRotante);
         if (direcaoRotacao == 'N')
         {
             if (playerRotante == 'A')
             {
-                dirPlayer2 = 'N';
+                dirPlayer1 = 'N';
+                player1y -= ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'N';
+                player2y -= ESCALA_MOVIMENTACAO / 2;
             }
         }
         else if (direcaoRotacao == 'S')
         {
             if (playerRotante == 'A')
             {
-                dirPlayer2 = 'S';
+                dirPlayer1 = 'S';
+                player1y += ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'S';
+                player2y += ESCALA_MOVIMENTACAO / 2;
             }
         }
         else if (direcaoRotacao == 'O')
         {
             if (playerRotante == 'A')
             {
-                dirPlayer2 = 'O';
+                dirPlayer1 = 'O';
+                player1x -= ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'O';
+                player2x -= ESCALA_MOVIMENTACAO / 2;
             }
         }
         else if (direcaoRotacao == 'L')
         {
             if (playerRotante == 'A')
             {
-                dirPlayer2 = 'L';
+                dirPlayer1 = 'L';
+                player1x += ESCALA_MOVIMENTACAO / 2;
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'L';
+                player1x += ESCALA_MOVIMENTACAO / 2;
             }
         }
+
+        if (playerControlante == playerRotante)
+            direcaoPlayerControlante = direcaoRotacao;
 
         Janela.AtualizarTela();
     }
@@ -283,46 +302,50 @@ public class Cliente
 
         class FechamentoDeJanela extends WindowAdapter {
             public void windowClosing(WindowEvent e) {
+                try
+                {
+                    servidor.receba(new PedidoParaSair());
+                }
+                catch (Exception erro) {}
                 System.exit(0);
             }
         }
 
         class keyHandler extends KeyAdapter  {
-            public void keyPressed(KeyEvent e)
-            {
-                if (e.getKeyCode() == KeyEvent.VK_W)
+            public void keyPressed(KeyEvent e) {
+                try
                 {
-                    if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
-                        Cliente.mandarRotacao(playerControlante, 'N');
-                    else
-                        Cliente.mandarMovimentacao(playerControlante,'N');
+                    if (e.getKeyCode() == KeyEvent.VK_W) {
+                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L') {
+                            Cliente.mandarRotacao(playerControlante, 'N');
+                            //Cliente.Janela.MostrarMensagemDeErro("ROTACAO");
+                        } else
+                            Cliente.mandarMovimentacao(playerControlante, 'N');
+                    } else if (e.getKeyCode() == KeyEvent.VK_A) {
+                        if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
+                            Cliente.mandarRotacao(playerControlante, 'O');
+                        else
+                            Cliente.mandarMovimentacao(playerControlante, 'O');
+                    } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                        if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
+                            Cliente.mandarRotacao(playerControlante, 'S');
+                        else
+                            Cliente.mandarMovimentacao(playerControlante, 'S');
+                    } else if (e.getKeyCode() == KeyEvent.VK_D) {
+                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'N')
+                            Cliente.mandarRotacao(playerControlante, 'L');
+                        else
+                            Cliente.mandarMovimentacao(playerControlante, 'L');
+                    } else if (e.getKeyCode() == KeyEvent.VK_L) {
+                        Cliente.mandarAtaque(playerControlante, direcaoPlayerControlante);
+                    }
                 }
-                else if (e.getKeyCode() == KeyEvent.VK_A)
+                catch (Exception erro)
                 {
-                    if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
-                        Cliente.mandarRotacao(playerControlante,'O');
-                    else
-                        Cliente.mandarMovimentacao(playerControlante,'O');
-                }
-                else if (e.getKeyCode() == KeyEvent.VK_S)
-                {
-                    if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
-                        Cliente.mandarRotacao(playerControlante,'S');
-                    else
-                        Cliente.mandarMovimentacao(playerControlante,'S');
-                }
-                else if (e.getKeyCode() == KeyEvent.VK_D)
-                {
-                    if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'N')
-                        Cliente.mandarRotacao(playerControlante,'L');
-                    else
-                        Cliente.mandarMovimentacao(playerControlante,'L');
-                }
-                else if (e.getKeyCode() == KeyEvent.VK_L)
-                {
-                    Cliente.mandarAtaque(playerControlante,direcaoPlayerControlante);
+                    erro.printStackTrace();
                 }
             }
+
         }
     }
 }

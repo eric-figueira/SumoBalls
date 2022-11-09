@@ -32,7 +32,7 @@ public class Parceiro
             transmissor.writeObject(x);
             transmissor.flush();
         }
-        catch (IOException erro) { throw new IOException("Erro na transmissãoo!"); }
+        catch (IOException erro) { erro.printStackTrace(); }
     }
 
 

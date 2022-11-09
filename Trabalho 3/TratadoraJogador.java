@@ -36,7 +36,9 @@ public class TratadoraJogador extends Thread
                 }
             }
             catch (Exception erro)
-            {}
+            {
+                erro.printStackTrace();
+            }
         }
     }
 }
