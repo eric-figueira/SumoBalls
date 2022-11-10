@@ -234,33 +234,33 @@ public class Cliente
 
         if (direcaoAtaque == 'N')
         {
-            if ((player1x + tamanho/4) <= player2x && (player1x + 3*tamanho/4) >= player2x)
+            if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
             {
-                if (Math.abs(player2y - player1y) <= tamanho)
+                if (Math.abs(player2y - player1y) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'N');
             }
         }
         else if (direcaoAtaque == 'S')
         {
-            if ((player1x + tamanho/4) <= player2x && (player1x + 3*tamanho/4) >= player2x)
+            if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
             {
-                if (Math.abs(player1y - player2y) <= tamanho)
+                if (Math.abs(player1y - player2y) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'S');
             }
         }
         else if (direcaoAtaque == 'L')
         {
-            if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
+            if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
-                if (Math.abs(player1x - player2x) <= tamanho)
+                if (Math.abs(player1x - player2x) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'L');
             }
         }
         else if (direcaoAtaque == 'O')
         {
-            if ((player1y + tamanho/4) <= player2y && (player1y + 3*tamanho/4) >= player2y)
+            if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
-                if (Math.abs(player2x - player1x) <= tamanho)
+                if (Math.abs(player2x - player1x) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, '0');
             }
         }

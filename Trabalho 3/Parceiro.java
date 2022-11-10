@@ -27,7 +27,7 @@ public class Parceiro
 
     public void receba (Comunicado x) throws Exception
     {
-        try 
+        try
         {
             transmissor.writeObject(x);
             transmissor.flush();
@@ -62,7 +62,8 @@ public class Parceiro
             this.proximoComunicado = null;
             return ret;
         }
-        catch (Exception erro) { throw new Exception("Erro de recepcão!"); }
+        catch (Exception erro) { erro.printStackTrace(); }
+        return null;
     }
 
 
