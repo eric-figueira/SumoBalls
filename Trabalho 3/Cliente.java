@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 
 public class Cliente
@@ -23,13 +24,11 @@ public class Cliente
     // Posicoes iniciais e direcao jogador 1
     private static int player1x = 200;
     private static int player1y = 200;
-    private static char dirPlayer1 = 'N';
 
 
     // Posicoes iniciais e direcao jogador 2
     private static int player2x = 425;
     private static int player2y = 425;
-    private static char dirPlayer2 = 'S';
 
     // imagens dos jogadores
     private static ImageIcon imgPlayer1 = null;
@@ -39,8 +38,8 @@ public class Cliente
     // Quando os jogadores vao se mexer
     private static final int ESCALA_MOVIMENTACAO = 20;
 
-    private static char playerControlante = 'A';
-    private static char direcaoPlayerControlante = 'N';
+    private static char playerControlante;
+    private static char direcaoPlayerControlante;
 
     static Janela janela = null;
 
@@ -121,14 +120,17 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
-        if (index == 0)      { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
-        else if (index == 1) { playerControlante = 'L'; direcaoPlayerControlante = 'S';}
-        else throw new Exception("Index out of range");
+        if (index == 0) {
+            System.out.print(playerControlante);
+            System.out.print(direcaoPlayerControlante);
+        } else if (index == 1) {
+            System.out.print(playerControlante);
+            System.out.print(direcaoPlayerControlante);
+        } else throw new Exception("Index out of range");
     } 
 
     public static void realizarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
-        //Cliente.Janela.MostrarMensagemDeErro("RECEBEU MOVIMENTACAO DE " + playerMovimentante);
         if (direcaoMovimento == 'N')
         {
             if (playerMovimentante == 'A') player1y -= ESCALA_MOVIMENTACAO;
@@ -157,6 +159,8 @@ public class Cliente
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
         //Cliente.Janela.MostrarMensagemDeErro("RECEBEU ROTACAO DE " + playerRotante);
+        char dirPlayer1 = 'N';
+        char dirPlayer2 = 'S';
         if (direcaoRotacao == 'N')
         {
             if (playerRotante == 'A')
@@ -236,32 +240,40 @@ public class Cliente
         {
             if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
             {
-                if (Math.abs(player2y - player1y) <= tamanho * 1.25)
+                if (Math.abs(player2y - player1y) <= tamanho * 1.25) {
                     realizarMovimentacao(playerAtacado, 'N');
+                    realizarMovimentacao(playerAtacado, 'N');
+                }
             }
         }
         else if (direcaoAtaque == 'S')
         {
             if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
             {
-                if (Math.abs(player1y - player2y) <= tamanho * 1.25)
+                if (Math.abs(player1y - player2y) <= tamanho * 1.25) {
                     realizarMovimentacao(playerAtacado, 'S');
+                    realizarMovimentacao(playerAtacado, 'S');
+                }
             }
         }
         else if (direcaoAtaque == 'L')
         {
             if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
-                if (Math.abs(player1x - player2x) <= tamanho * 1.25)
+                if (Math.abs(player1x - player2x) <= tamanho * 1.25) {
                     realizarMovimentacao(playerAtacado, 'L');
+                    realizarMovimentacao(playerAtacado, 'L');
+                }
             }
         }
         else if (direcaoAtaque == 'O')
         {
             if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
-                if (Math.abs(player2x - player1x) <= tamanho * 1.25)
+                if (Math.abs(player2x - player1x) <= tamanho * 1.25) {
                     realizarMovimentacao(playerAtacado, '0');
+                    realizarMovimentacao(playerAtacado, '0');
+                }
             }
         }
 
@@ -466,10 +478,10 @@ public class Cliente
                 try
                 {
                     if (e.getKeyCode() == KeyEvent.VK_W) {
-                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L') {
+                        Cliente.Janela.MostrarMensagemDeErro(Cliente.playerControlante+"|"+Cliente.direcaoPlayerControlante);
+                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
                             Cliente.mandarRotacao(playerControlante, 'N');
-                            //Cliente.Janela.MostrarMensagemDeErro("ROTACAO");
-                        } else
+                        else
                             Cliente.mandarMovimentacao(playerControlante, 'N');
                     } else if (e.getKeyCode() == KeyEvent.VK_A) {
                         if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
