@@ -343,8 +343,7 @@ public class Cliente
     public static class Janela extends JFrame
     {   
         static JLayeredPane fundo;
-        static JLabel ganhou;
-        static JLabel perdeu;
+        static JLabel resultado = new JLabel("");
 
         public Janela () 
         {
@@ -357,17 +356,10 @@ public class Cliente
             titulo.setForeground(Color.ORANGE);
             titulo.setFont(new Font("Monospace", Font.BOLD, 50));
 
-            perdeu = new JLabel("Perdeu!");
-            perdeu.setBounds(210, 275, 400, 75);
-            perdeu.setForeground(Color.RED);
-            perdeu.setFont(new Font("Monospace", Font.BOLD, 75));
-            perdeu.setVisible(false);
 
-            ganhou = new JLabel("Ganhou!");
-            ganhou.setBounds(210, 275, 400, 75);
-            ganhou.setForeground(Color.GREEN);
-            ganhou.setFont(new Font("Monospace", Font.BOLD, 75));
-            ganhou.setVisible(false);
+            resultado.setBounds(210, 275, 400, 75);
+            resultado.setFont(new Font("Monospace", Font.BOLD, 75));
+            resultado.setVisible(false);
 
 
             JPanel ringue = new JPanel();
@@ -388,8 +380,7 @@ public class Cliente
             fundo = new JLayeredPane();
             fundo.setSize(600, 600);
             fundo.add(titulo, 2);
-            fundo.add(ganhou,0);
-            fundo.add(perdeu, 0);
+            fundo.add(resultado,0);
             fundo.add(ringue, 2);
             fundo.add(player1, 1);
             fundo.add(player2, 1);
@@ -405,16 +396,27 @@ public class Cliente
             this.setResizable(false);
         }
 
-        public static void comunicarVitoria(char playerVencedor)
+        public static void comunicarVitoria(char playerVencedor, boolean desistencia)
         {
             if (playerVencedor == playerControlante)
             {
-                ganhou.setVisible(true);
+                if (desistencia) {
+                    resultado.setText("Ganhou por desistência!");
+                    resultado.setForeground(Color.GREEN);
+                }
+                else {
+                    resultado.setText("Ganhou!");
+                    resultado.setForeground(Color.GREEN);
+                }
             }
             else
             {
-                perdeu.setVisible(true);
+                resultado.setText("Perdeu!");
+                resultado.setForeground(Color.RED);
             }
+
+            resultado.setVisible(true);
+
         }
 
         public static void AtualizarTela()
@@ -425,10 +427,10 @@ public class Cliente
             try
             {
                 if (player1x <= 58 || player1x >= 550 || player1y >= 550 || player1y <= 58)
-                    servidor.receba(new ComunicadoDeVitoria('L'));
+                    servidor.receba(new ComunicadoDeVitoria('L', false));
 
                 if (player2x <= 58 || player2x >= 550 || player2y >= 550 || player2y <= 58)
-                    servidor.receba(new ComunicadoDeVitoria('A'));
+                    servidor.receba(new ComunicadoDeVitoria('A', false));
             }
             catch (Exception erro)
             {
@@ -446,6 +448,10 @@ public class Cliente
             public void windowClosing(WindowEvent e) {
                 try
                 {
+                    if (playerControlante == 'A')
+                        servidor.receba(new ComunicadoDeVitoria('L', true));
+                    else
+                        servidor.receba(new ComunicadoDeVitoria('A', true));
                     servidor.receba(new PedidoParaSair());
                 }
                 catch (Exception erro) {

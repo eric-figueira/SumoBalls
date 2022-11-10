@@ -65,7 +65,6 @@ public class SupervisoraDeConexao extends Thread
                 Cliente.setPlayer(this.usuarios.indexOf(usuario));
             }
 
-
             for (;;) 
             {
                 Comunicado comunicado = this.usuario.envie ();

@@ -37,7 +37,7 @@ public class TratadoraJogador extends Thread
                 else if (this.servidor.espie() instanceof ComunicadoDeVitoria)
                 {
                     ComunicadoDeVitoria cv = (ComunicadoDeVitoria) servidor.envie();
-                    Cliente.Janela.comunicarVitoria(cv.getPlayerVencedor());
+                    Cliente.Janela.comunicarVitoria(cv.getPlayerVencedor(), cv.getHouveDesistencia());
                 }
             }
             catch (Exception erro)
