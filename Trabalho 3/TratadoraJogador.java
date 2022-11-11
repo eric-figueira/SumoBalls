@@ -39,6 +39,16 @@ public class TratadoraJogador extends Thread
                     ComunicadoDeVitoria cv = (ComunicadoDeVitoria) servidor.envie();
                     Cliente.Janela.comunicarVitoria(cv.getPlayerVencedor(), cv.getHouveDesistencia());
                 }
+                else if (this.servidor.espie() instanceof SetadoraDeJogador)
+                {
+                    SetadoraDeJogador setPlayer = (SetadoraDeJogador) servidor.envie();
+                    Cliente.setPlayer(setPlayer.getIndexJogador());
+                }
+                else if (this.servidor.espie() instanceof ComunicadoInicio)
+                {
+                    ComunicadoInicio ci = (ComunicadoInicio) servidor.envie();
+                    Cliente.iniciar();
+                }
             }
             catch (Exception erro)
             {

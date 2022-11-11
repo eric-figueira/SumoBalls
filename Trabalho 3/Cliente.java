@@ -4,15 +4,16 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import javax.swing.*;
 
 public class Cliente
 {
     // Parte do Socket
     public static final String HOST_PADRAO = "localhost";
     public static final int PORTA_PADRAO = 3000;
-    private static Parceiro servidor = null; 
+    private static Parceiro servidor = null;
+
+    static String host;
+    public static boolean isPassed = true;
 
     private static final byte tamanho = 92;
 
@@ -36,34 +37,32 @@ public class Cliente
 
 
     // Quando os jogadores vao se mexer
-    private static final int ESCALA_MOVIMENTACAO = 20;
+    private static int ESCALA_MOVIMENTACAO = 20;
 
     private static char playerControlante;
     private static char direcaoPlayerControlante;
 
     static Janela janela = null;
 
+    public static void main (String args[]) {
+        //new ObterHost();
 
-    public static void main (String args[])
-    {
-        if (args.length > 2)
-        {
+        if (args.length > 2) {
             System.err.println("Uso esperado: java Cliente [HOST [PORTA]]\n");
             return;
         }
 
         Socket conexao = null;
         ObjectOutputStream transmissor = null;
-        ObjectInputStream receptor = null;  
-       
-        try
-        {
-            String host = Cliente.HOST_PADRAO;
-            int   porta = Cliente.PORTA_PADRAO;
+        ObjectInputStream receptor = null;
+
+        try {
+            host = Cliente.HOST_PADRAO;
+            int porta = Cliente.PORTA_PADRAO;
 
             if (args.length > 0)
                 host = args[0];
-            
+
             if (args.length == 2)
                 porta = Integer.parseInt(args[1]);
 
@@ -72,18 +71,19 @@ public class Cliente
             receptor = new ObjectInputStream(conexao.getInputStream());
             servidor = new Parceiro(conexao, receptor, transmissor);
         }
-        catch (Exception erro) { System.out.println("Indique o servidor e a porta corretos!"); }
+        catch (Exception erro) {
+            System.out.println("Indique o servidor e a porta corretos!");
+        }
 
         TratadoraDeComunicadoDeDesligamento tratadoraDeComunicadoDeDesligamento = null;
         TratadoraJogador tratadoraJogador = null;
 
-        try
-        {
+        try {
             tratadoraDeComunicadoDeDesligamento = new TratadoraDeComunicadoDeDesligamento(servidor);
             tratadoraJogador = new TratadoraJogador(servidor);
         }
-        catch (Exception erro)
-        {}
+        catch (Exception erro) {
+        }
 
         tratadoraDeComunicadoDeDesligamento.start();
         tratadoraJogador.start();
@@ -101,8 +101,6 @@ public class Cliente
 
     public static void mandarRotacao(char playerRotante, char direcaoRotacao)
     {
-        //Janela.MostrarMensagemDeErro(playerRotante+":"+direcaoPlayerControlante+":"+direcaoRotacao);
-
         try { servidor.receba(new Rotacao(playerRotante, direcaoRotacao)); }
         catch (Exception erro)
         {
@@ -120,14 +118,19 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
-        if (index == 0) {
-            System.out.print(playerControlante);
-            System.out.print(direcaoPlayerControlante);
-        } else if (index == 1) {
-            System.out.print(playerControlante);
-            System.out.print(direcaoPlayerControlante);
-        } else throw new Exception("Index out of range");
-    } 
+        if (index == 0) { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
+        else if (index == 1) {
+            playerControlante = 'L'; direcaoPlayerControlante = 'S';
+            servidor.receba(new ComunicadoInicio());
+        }
+        else
+        {
+            Cliente.Janela.MostrarMensagemDeErro("Essa partida já começou. Volte a tentar mais tarde!");
+            try { servidor.receba(new PedidoParaSair()); }
+            catch (Exception erro) { };
+            System.exit(0);
+        }
+    }
 
     public static void realizarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
@@ -158,7 +161,6 @@ public class Cliente
 
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
-        //Cliente.Janela.MostrarMensagemDeErro("RECEBEU ROTACAO DE " + playerRotante);
         char dirPlayer1 = 'N';
         char dirPlayer2 = 'S';
         if (direcaoRotacao == 'N')
@@ -203,7 +205,7 @@ public class Cliente
             {
                 dirPlayer2 = 'O';
                 player2x -= ESCALA_MOVIMENTACAO / 2;
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_E.png"))));
+                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
         else if (direcaoRotacao == 'L')
@@ -231,7 +233,8 @@ public class Cliente
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
-        //Cliente.Janela.MostrarMensagemDeErro(playerAtacante + " ATACOU");
+        ESCALA_MOVIMENTACAO = 40;
+
         char playerAtacado = 'L';
         if (playerAtacante == 'L')
             playerAtacado = 'A';
@@ -240,40 +243,32 @@ public class Cliente
         {
             if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
             {
-                if (Math.abs(player2y - player1y) <= tamanho * 1.25) {
+                if (Math.abs(player2y - player1y) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'N');
-                    realizarMovimentacao(playerAtacado, 'N');
-                }
             }
         }
         else if (direcaoAtaque == 'S')
         {
             if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
             {
-                if (Math.abs(player1y - player2y) <= tamanho * 1.25) {
+                if (Math.abs(player1y - player2y) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'S');
-                    realizarMovimentacao(playerAtacado, 'S');
-                }
             }
         }
         else if (direcaoAtaque == 'L')
         {
             if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
-                if (Math.abs(player1x - player2x) <= tamanho * 1.25) {
+                if (Math.abs(player1x - player2x) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'L');
-                    realizarMovimentacao(playerAtacado, 'L');
-                }
             }
         }
         else if (direcaoAtaque == 'O')
         {
             if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
-                if (Math.abs(player2x - player1x) <= tamanho * 1.25) {
+                if (Math.abs(player2x - player1x) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, '0');
-                    realizarMovimentacao(playerAtacado, '0');
-                }
             }
         }
 
@@ -282,6 +277,8 @@ public class Cliente
             Cliente.moverBastao(playerAtacante, direcaoAtaque);
         }
         catch (Exception erro) {}
+
+        ESCALA_MOVIMENTACAO = 20;
     }
 
     public static void moverBastao (char playerAtacante, char direcaoAtaque) throws InterruptedException
@@ -292,28 +289,24 @@ public class Cliente
             if (direcaoAtaque == 'N')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
@@ -323,46 +316,115 @@ public class Cliente
             if (direcaoAtaque == 'N')
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O_ataque.png"))));
-                Janela.AtualizarTela();
                 Thread.sleep(delay);
                 player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
     }
 
+    public static void iniciar() throws Exception
+    {
+        int delay = 1000;
+        try {
+            Janela.resultado.setText("Partida iniciando em 3...");
+            Thread.sleep(delay);
+            Janela.resultado.setText("Partida iniciando em 2...");
+            Thread.sleep(delay);
+            Janela.resultado.setText("Partida iniciando em 1...");
+            Thread.sleep(delay);
+            Janela.resultado.setText("Lutem!");
+            Thread.sleep(delay);
+            habilitarEventos();
+        }
+        catch (Exception erro)
+        { }
+    }
+
+
+    public static void habilitarEventos() {
+        janela.ObterJanela().addKeyListener(new Janela.keyHandler());
+    }
+
+    public static void desabilitarEventos() {
+        System.out.print("dd");
+        janela.ObterJanela().removeKeyListener(new Janela.keyHandler());
+    }
+
+    public static class ObterHost extends JFrame
+    {
+        public ObterHost getObterHost() {
+            return ObterHost.this;
+        }
+
+        static JTextField host = new JTextField();
+        public ObterHost ()
+        {
+            super ("Obter Host");
+
+            isPassed = false;
+
+            JLabel message = new JLabel("Digite o host desejado: ");
+            JTextField host = new JTextField();
+            JButton botao = new JButton("Iniciar jogo");
+            botao.addActionListener(new InserirHost());
+            Container cntForm = this.getContentPane();
+            cntForm.setLayout(new BorderLayout());
+            cntForm.add(message, BorderLayout.NORTH);
+            cntForm.add(host, BorderLayout.CENTER);
+            cntForm.add(botao, BorderLayout.SOUTH);
+
+            this.addWindowListener(new ObterHost.FechamentoDeJanela());
+            this.setSize(200, 200);
+            this.setVisible(true);
+            this.setResizable(false);
+        }
+
+        static class FechamentoDeJanela extends WindowAdapter {
+            public void windowClosing(WindowEvent e) { System.exit(0); }
+        }
+
+        class InserirHost implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                Cliente.host = host.getText();
+                isPassed = true;
+                getObterHost().dispose();
+            }
+        }
+    }
 
     public static class Janela extends JFrame
-    {   
+    {
         static JLayeredPane fundo;
-        static JLabel resultado = new JLabel("");
+        static JLabel resultado = new JLabel("Aguardando players");
 
-        public Janela () 
+        public Janela ObterJanela() {
+            return Janela.this;
+        }
+
+        public Janela ()
         {
             super("SumoBalls");
-            
+
             this.setLayout(null);
-            
+
             JLabel titulo = new JLabel("SumoBalls");
             titulo.setBounds(225, 30, 300, 50);
             titulo.setForeground(Color.ORANGE);
@@ -371,7 +433,7 @@ public class Cliente
 
             resultado.setBounds(210, 275, 400, 75);
             resultado.setFont(new Font("Monospace", Font.BOLD, 75));
-            resultado.setVisible(false);
+            resultado.setVisible(true);
 
 
             JPanel ringue = new JPanel();
@@ -379,12 +441,12 @@ public class Cliente
             ringue.setBackground(Color.LIGHT_GRAY);
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
-            
+
             imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 92, 92);
 
-            
+
             imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 92, 92);
@@ -402,7 +464,6 @@ public class Cliente
             cntForm.setBackground(Color.DARK_GRAY);
 
             this.addWindowListener(new FechamentoDeJanela());
-            this.addKeyListener(new keyHandler());
             this.setSize(700, 700);
             this.setVisible(true);
             this.setResizable(false);
@@ -410,11 +471,15 @@ public class Cliente
 
         public static void comunicarVitoria(char playerVencedor, boolean desistencia)
         {
+            System.out.print("aa");
+
             if (playerVencedor == playerControlante)
             {
                 if (desistencia) {
                     resultado.setText("Ganhou por desistência!");
                     resultado.setForeground(Color.GREEN);
+                    resultado.setBounds(160, 275, 450, 75);
+                    resultado.setFont(new Font("Monospace", Font.BOLD, 35));
                 }
                 else {
                     resultado.setText("Ganhou!");
@@ -427,6 +492,9 @@ public class Cliente
                 resultado.setForeground(Color.RED);
             }
 
+            System.out.print("bb");
+            desabilitarEventos();
+            System.out.print("cc");
             resultado.setVisible(true);
 
         }
@@ -478,7 +546,6 @@ public class Cliente
                 try
                 {
                     if (e.getKeyCode() == KeyEvent.VK_W) {
-                        Cliente.Janela.MostrarMensagemDeErro(Cliente.playerControlante+"|"+Cliente.direcaoPlayerControlante);
                         if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
                             Cliente.mandarRotacao(playerControlante, 'N');
                         else

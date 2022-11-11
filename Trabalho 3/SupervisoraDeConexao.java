@@ -62,7 +62,7 @@ public class SupervisoraDeConexao extends Thread
             synchronized (usuarios) 
             {
                 this.usuarios.add(usuario);
-                Cliente.setPlayer(this.usuarios.indexOf(usuario));
+                this.usuario.receba(new SetadoraDeJogador(usuarios.indexOf(usuario)));
             }
 
             for (;;) 
@@ -95,6 +95,12 @@ public class SupervisoraDeConexao extends Thread
                     ComunicadoDeVitoria cv = (ComunicadoDeVitoria) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(cv);
+                }
+                else if (comunicado instanceof ComunicadoInicio)
+                {
+                    ComunicadoInicio ci = (ComunicadoInicio) comunicado;
+                    for (Parceiro parceiro : usuarios)
+                        parceiro.receba(ci);
                 }
                 else if (comunicado instanceof PedidoParaSair) 
                 {
