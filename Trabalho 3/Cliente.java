@@ -33,7 +33,6 @@ public class Cliente
 
     // imagens dos jogadores
     private static ImageIcon imgPlayer1 = null;
-    private static ImageIcon imgPlayer2 = null;
 
 
     // Quando os jogadores vao se mexer
@@ -42,7 +41,12 @@ public class Cliente
     private static char playerControlante;
     private static char direcaoPlayerControlante;
 
+    private static boolean isFinished = false;
+
     static Janela janela = null;
+
+    static Cliente.Janela.keyHandler kh = new Janela.keyHandler();
+
 
     public static void main (String args[]) {
         //new ObterHost();
@@ -98,7 +102,6 @@ public class Cliente
         catch (Exception erro) {}
     }
 
-
     public static void mandarRotacao(char playerRotante, char direcaoRotacao)
     {
         try { servidor.receba(new Rotacao(playerRotante, direcaoRotacao)); }
@@ -108,13 +111,11 @@ public class Cliente
         }
     }
 
-
     public static void mandarAtaque(char playerAtacante, char direcaoAtaque)
     {
         try { servidor.receba(new Ataque(playerAtacante, direcaoAtaque)); }
         catch (Exception erro) {}
     }
-
 
     public static void setPlayer(int index) throws Exception
     {
@@ -157,7 +158,6 @@ public class Cliente
 
         Janela.AtualizarTela();
     }
-
 
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
@@ -229,7 +229,6 @@ public class Cliente
 
         Janela.AtualizarTela();
     }
-
 
     public static void realizarAtaque(char playerAtacante, char direcaoAtaque)
     {
@@ -343,30 +342,36 @@ public class Cliente
     public static void iniciar() throws Exception
     {
         int delay = 1000;
-        try {
+        try
+        {
+            Janela.resultado.setBounds(120, 275, 400, 75);
+            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 15));
             Janela.resultado.setText("Partida iniciando em 3...");
             Thread.sleep(delay);
+
             Janela.resultado.setText("Partida iniciando em 2...");
             Thread.sleep(delay);
+
             Janela.resultado.setText("Partida iniciando em 1...");
             Thread.sleep(delay);
+
+            Janela.resultado.setBounds(245, 285, 450, 75);
+            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
             Janela.resultado.setText("Lutem!");
+
             Thread.sleep(delay);
+            Janela.resultado.setVisible(false);
+            Thread.sleep(delay);
+
             habilitarEventos();
         }
         catch (Exception erro)
         { }
     }
 
+    public static void habilitarEventos()   { System.out.print("cc"); janela.ObterJanela().addKeyListener(kh); }
 
-    public static void habilitarEventos() {
-        janela.ObterJanela().addKeyListener(new Janela.keyHandler());
-    }
-
-    public static void desabilitarEventos() {
-        System.out.print("dd");
-        janela.ObterJanela().removeKeyListener(new Janela.keyHandler());
-    }
+    public static void desabilitarEventos() { System.out.print("dd"); janela.ObterJanela().removeKeyListener(kh); }
 
     public static class ObterHost extends JFrame
     {
@@ -426,13 +431,13 @@ public class Cliente
             this.setLayout(null);
 
             JLabel titulo = new JLabel("SumoBalls");
-            titulo.setBounds(225, 30, 300, 50);
+            titulo.setBounds(225, 30, 400, 50);
             titulo.setForeground(Color.ORANGE);
             titulo.setFont(new Font("Monospace", Font.BOLD, 50));
 
 
-            resultado.setBounds(210, 275, 400, 75);
-            resultado.setFont(new Font("Monospace", Font.BOLD, 75));
+            resultado.setBounds(160, 275, 400, 75);
+            resultado.setFont(new Font("Monospace", Font.BOLD, 40));
             resultado.setVisible(true);
 
 
@@ -447,7 +452,7 @@ public class Cliente
             player1.setBounds(player1x, player1y, 92, 92);
 
 
-            imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
+            ImageIcon imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
             player2 = new JLabel(imgPlayer2);
             player2.setBounds(player2x, player2y, 92, 92);
 
@@ -471,20 +476,17 @@ public class Cliente
 
         public static void comunicarVitoria(char playerVencedor, boolean desistencia)
         {
-            System.out.print("aa");
-
             if (playerVencedor == playerControlante)
             {
-                if (desistencia) {
+                resultado.setForeground(Color.GREEN);
+                if (desistencia)
+                {
                     resultado.setText("Ganhou por desistência!");
-                    resultado.setForeground(Color.GREEN);
                     resultado.setBounds(160, 275, 450, 75);
                     resultado.setFont(new Font("Monospace", Font.BOLD, 35));
                 }
-                else {
+                else
                     resultado.setText("Ganhou!");
-                    resultado.setForeground(Color.GREEN);
-                }
             }
             else
             {
@@ -492,11 +494,8 @@ public class Cliente
                 resultado.setForeground(Color.RED);
             }
 
-            System.out.print("bb");
             desabilitarEventos();
-            System.out.print("cc");
             resultado.setVisible(true);
-
         }
 
         public static void AtualizarTela()
@@ -506,11 +505,11 @@ public class Cliente
 
             try
             {
-                if (player1x <= 58 || player1x >= 550 || player1y >= 550 || player1y <= 58)
-                    servidor.receba(new ComunicadoDeVitoria('L', false));
+                if (player1x <= 58 || player1x >= 550 || player1y >= 550 || player1y <= 58) {
+                    servidor.receba(new ComunicadoDeVitoria('L', false)); isFinished = true; }
 
-                if (player2x <= 58 || player2x >= 550 || player2y >= 550 || player2y <= 58)
-                    servidor.receba(new ComunicadoDeVitoria('A', false));
+                if (player2x <= 58 || player2x >= 550 || player2y >= 550 || player2y <= 58) {
+                    servidor.receba(new ComunicadoDeVitoria('A', false)); isFinished = true; }
             }
             catch (Exception erro)
             {
@@ -528,10 +527,13 @@ public class Cliente
             public void windowClosing(WindowEvent e) {
                 try
                 {
-                    if (playerControlante == 'A')
-                        servidor.receba(new ComunicadoDeVitoria('L', true));
-                    else
-                        servidor.receba(new ComunicadoDeVitoria('A', true));
+                    if (!isFinished)
+                    {
+                        if (playerControlante == 'A')
+                            servidor.receba(new ComunicadoDeVitoria('L', true));
+                        else
+                            servidor.receba(new ComunicadoDeVitoria('A', true));
+                    }
                     servidor.receba(new PedidoParaSair());
                 }
                 catch (Exception erro) {
