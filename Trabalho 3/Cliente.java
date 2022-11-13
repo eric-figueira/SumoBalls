@@ -275,7 +275,7 @@ public class Cliente
             if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
             {
                 if (Math.abs(player2x - player1x) <= tamanho * 1.25)
-                    realizarMovimentacao(playerAtacado, '0');
+                    realizarMovimentacao(playerAtacado, 'O');
             }
         }
 
