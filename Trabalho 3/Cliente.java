@@ -8,12 +8,12 @@ import java.util.*;
 public class Cliente
 {
     // Parte do Socket
-    public static final String HOST_PADRAO = "localhost";
+    //public static final String HOST_PADRAO = "localhost";
     public static final int PORTA_PADRAO = 3000;
     private static Parceiro servidor = null;
 
     static String host;
-    public static boolean isPassed = true;
+    public static boolean isPassed;
 
     private static final byte tamanho = 92;
 
@@ -49,7 +49,14 @@ public class Cliente
 
 
     public static void main (String args[]) {
-        //new ObterHost();
+        ObterHost oh = new ObterHost();
+
+        do {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {}
+        }
+        while (!isPassed);
 
         if (args.length > 2) {
             System.err.println("Uso esperado: java Cliente [HOST [PORTA]]\n");
@@ -61,7 +68,6 @@ public class Cliente
         ObjectInputStream receptor = null;
 
         try {
-            host = Cliente.HOST_PADRAO;
             int porta = Cliente.PORTA_PADRAO;
 
             if (args.length > 0)
@@ -76,7 +82,8 @@ public class Cliente
             servidor = new Parceiro(conexao, receptor, transmissor);
         }
         catch (Exception erro) {
-            System.out.println("Indique o servidor e a porta corretos!");
+            ObterHost.MostrarMensagemDeErro("Indique o servidor e a porta corretos!");
+            System.exit(0);
         }
 
         TratadoraDeComunicadoDeDesligamento tratadoraDeComunicadoDeDesligamento = null;
@@ -93,6 +100,7 @@ public class Cliente
         tratadoraJogador.start();
 
         janela = new Janela();
+        oh.getObterHost().dispose();
     }
 
 
@@ -346,13 +354,13 @@ public class Cliente
         {
             Janela.resultado.setBounds(120, 275, 400, 75);
             Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 15));
-            Janela.resultado.setText("Partida iniciando em 3...");
+            Janela.resultado.setText("3...");
             Thread.sleep(delay);
 
-            Janela.resultado.setText("Partida iniciando em 2...");
+            Janela.resultado.setText("2...");
             Thread.sleep(delay);
 
-            Janela.resultado.setText("Partida iniciando em 1...");
+            Janela.resultado.setText("1...");
             Thread.sleep(delay);
 
             Janela.resultado.setBounds(245, 285, 450, 75);
@@ -380,6 +388,10 @@ public class Cliente
         }
 
         static JTextField host = new JTextField();
+        static Container cntForm;
+
+        JTextField novoHost;
+
         public ObterHost ()
         {
             super ("Obter Host");
@@ -387,17 +399,17 @@ public class Cliente
             isPassed = false;
 
             JLabel message = new JLabel("Digite o host desejado: ");
-            JTextField host = new JTextField();
+            novoHost = new JTextField();
             JButton botao = new JButton("Iniciar jogo");
             botao.addActionListener(new InserirHost());
-            Container cntForm = this.getContentPane();
+            cntForm = this.getContentPane();
             cntForm.setLayout(new BorderLayout());
             cntForm.add(message, BorderLayout.NORTH);
-            cntForm.add(host, BorderLayout.CENTER);
+            cntForm.add(novoHost, BorderLayout.CENTER);
             cntForm.add(botao, BorderLayout.SOUTH);
 
             this.addWindowListener(new ObterHost.FechamentoDeJanela());
-            this.setSize(200, 200);
+            this.setSize(400, 100);
             this.setVisible(true);
             this.setResizable(false);
         }
@@ -408,10 +420,14 @@ public class Cliente
 
         class InserirHost implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-                Cliente.host = host.getText();
+                Cliente.host = novoHost.getText();
                 isPassed = true;
-                getObterHost().dispose();
             }
+        }
+
+        public static void MostrarMensagemDeErro(String erroRecebido)
+        {
+            JOptionPane.showMessageDialog (cntForm, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
         }
     }
 
