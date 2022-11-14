@@ -44,9 +44,9 @@ public class TratadoraJogador extends Thread
                     SetadoraDeJogador setPlayer = (SetadoraDeJogador) servidor.envie();
                     Cliente.setPlayer(setPlayer.getIndexJogador());
                 }
-                else if (this.servidor.espie() instanceof ComunicadoInicio)
+                else if (this.servidor.espie() instanceof ComunicadoDeInicio)
                 {
-                    ComunicadoInicio ci = (ComunicadoInicio) servidor.envie();
+                    ComunicadoDeInicio ci = (ComunicadoDeInicio) servidor.envie();
                     Cliente.iniciar();
                 }
             }
