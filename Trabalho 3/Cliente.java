@@ -31,8 +31,6 @@ public class Cliente
     private static int player2x = 425;
     private static int player2y = 425;
 
-    // imagens dos jogadores
-    private static ImageIcon imgPlayer1 = null;
 
 
     // Quando os jogadores vao se mexer
@@ -344,15 +342,15 @@ public class Cliente
         int delay = 1000;
         try
         {
-            Janela.resultado.setBounds(120, 275, 400, 75);
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 15));
-            Janela.resultado.setText("Partida iniciando em 3...");
+            Janela.resultado.setBounds(350, 275, 70, 75);
+            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 70));
+            Janela.resultado.setText("3");
             Thread.sleep(delay);
 
-            Janela.resultado.setText("Partida iniciando em 2...");
+            Janela.resultado.setText("2");
             Thread.sleep(delay);
 
-            Janela.resultado.setText("Partida iniciando em 1...");
+            Janela.resultado.setText("1");
             Thread.sleep(delay);
 
             Janela.resultado.setBounds(245, 285, 450, 75);
@@ -369,9 +367,9 @@ public class Cliente
         { }
     }
 
-    public static void habilitarEventos()   { System.out.print("cc"); janela.ObterJanela().addKeyListener(kh); }
+    public static void habilitarEventos()   { janela.ObterJanela().addKeyListener(kh); }
 
-    public static void desabilitarEventos() { System.out.print("dd"); janela.ObterJanela().removeKeyListener(kh); }
+    public static void desabilitarEventos() { janela.ObterJanela().removeKeyListener(kh); }
 
     public static class ObterHost extends JFrame
     {
@@ -447,7 +445,7 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
 
-            imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
+            ImageIcon imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
             player1 = new JLabel(imgPlayer1);
             player1.setBounds(player1x, player1y, 92, 92);
 
