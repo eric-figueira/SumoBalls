@@ -1,0 +1,27 @@
+
+* => oco 
+1 => só recodar
+
+
+
+
+Cliente (comecado)
+Tratadora (THREAD)
+TratadoraDeVitoria (THREAD)
+ComunicadoDeDesistencia
+SupervisoraDeConexao (comecado)
+
+
+
+Rotacao (feito)
+TratadoraDeComunicadoDeDesligamento 1 (THREAD) (feito)
+Parceiro 1 (feito)
+Movimentacao (feito)
+Ataque (feito)
+Comunicado * (feito)
+ComunicadoDeDesligamento * (feito)
+ComunicadoDeVitoria * (feito)
+ComunicadoDeInicio * (feito)
+PedidoParaSair * (feito)
+Servidor (feito)
+AceitadoraDeConexao (feito)
