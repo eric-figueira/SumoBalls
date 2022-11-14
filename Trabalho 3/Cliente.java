@@ -23,20 +23,18 @@ public class Cliente
 
 
     // Posicoes iniciais e direcao jogador 1
-    private static int playerAzulx = 200;
-    private static int playerAzuly = 200;
+    private static final int IniPlayerAzulx = 200;
+    private static final int IniPlayerAzuly = 200;
+    private static int playerAzulx = IniPlayerAzulx;
+    private static int playerAzuly = IniPlayerAzuly;
 
 
     // Posicoes iniciais e direcao jogador 2
-<<<<<<< HEAD
-    private static int player2x = 425;
-    private static int player2y = 425;
+    private static final int IniPlayerLaranjax = 425;
+    private static final int IniPlayerLaranjay = 425;
+    private static int playerLaranjax = IniPlayerLaranjax;
+    private static int playerLaranjay = IniPlayerLaranjay;
 
-
-=======
-    private static int playerLaranjax = 425;
-    private static int playerLaranjay = 425;
->>>>>>> f2461b62c4a63a9f6350170d775450af8510000e
 
     // Quando os jogadores vao se mexer
     private static int ESCALA_MOVIMENTACAO = 20;
@@ -44,7 +42,7 @@ public class Cliente
     private static char playerControlante;
     private static char direcaoPlayerControlante;
 
-    private static boolean isFinished = false;
+    private static boolean isMatchFinished = false;
 
     static Janela janela = null;
 
@@ -52,7 +50,7 @@ public class Cliente
 
 
     public static void main (String args[]) {
-        ObterHost oh = new ObterHost();
+       ObterHost oh = new ObterHost();
 
         do {
             try {
@@ -130,10 +128,11 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
-        if (index == 0) { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
+        if (index == 0) { playerControlante = 'A'; direcaoPlayerControlante = 'N'; Janela.time.setText("Time: Azul"); }
         else if (index == 1) {
             playerControlante = 'L'; direcaoPlayerControlante = 'S';
             servidor.receba(new ComunicadoDeInicio());
+            Janela.time.setText("Time: Laranja");
         }
         else
         {
@@ -172,19 +171,15 @@ public class Cliente
 
     public static void realizarRotacao(char playerRotante, char direcaoRotacao)
     {
-        char dirPlayer1 = 'N';
-        char dirPlayer2 = 'S';
         if (direcaoRotacao == 'N')
         {
             if (playerRotante == 'A')
             {
-                dirPlayer1 = 'N';
                 playerAzuly -= ESCALA_MOVIMENTACAO / 2;
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (playerRotante == 'L')
             {
-                dirPlayer2 = 'N';
                 playerLaranjay -= ESCALA_MOVIMENTACAO / 2;
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
@@ -193,13 +188,11 @@ public class Cliente
         {
             if (playerRotante == 'A')
             {
-                dirPlayer1 = 'S';
                 playerAzuly += ESCALA_MOVIMENTACAO / 2;
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (playerRotante == 'L')
             {
-                dirPlayer2 = 'S';
                 playerLaranjay += ESCALA_MOVIMENTACAO / 2;
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
@@ -208,13 +201,11 @@ public class Cliente
         {
             if (playerRotante == 'A')
             {
-                dirPlayer1 = 'O';
                 playerAzulx -= ESCALA_MOVIMENTACAO / 2;
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
             if (playerRotante == 'L')
             {
-                dirPlayer2 = 'O';
                 playerLaranjax -= ESCALA_MOVIMENTACAO / 2;
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
@@ -223,13 +214,11 @@ public class Cliente
         {
             if (playerRotante == 'A')
             {
-                dirPlayer1 = 'L';
                 playerAzulx += ESCALA_MOVIMENTACAO / 2;
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (playerRotante == 'L')
             {
-                dirPlayer2 = 'L';
                 playerLaranjax += ESCALA_MOVIMENTACAO / 2;
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
@@ -355,60 +344,56 @@ public class Cliente
         int delay = 1000;
         try
         {
-<<<<<<< HEAD
-            Janela.resultado.setBounds(350, 275, 70, 75);
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 70));
+            if (isMatchFinished) // Para nao fazermos uma reatribuicao com os mesmo valores
+            {
+                playerAzul.setBounds(IniPlayerAzulx, IniPlayerAzuly, tamanho, tamanho);
+                playerLaranja.setBounds(IniPlayerLaranjax, IniPlayerLaranjay, tamanho, tamanho);
+
+                playerAzulx = IniPlayerAzulx;
+                playerAzuly = IniPlayerAzuly;
+                playerLaranjax = IniPlayerLaranjax;
+                playerLaranjay = IniPlayerLaranjay;
+
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
+
+                if (playerControlante == 'A') direcaoPlayerControlante = 'S';
+                if (playerControlante == 'S') direcaoPlayerControlante = 'N';
+            }
+
+            Janela.resultado.setBounds(175, 275, 400, 75);
+            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 35));
+            Janela.resultado.setForeground(Color.DARK_GRAY);
+
+            Janela.resultado.setText("Partida iniciando em:");
+            Thread.sleep(delay);
+
+            Janela.resultado.setBounds(340, 275, 400, 75);
+            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
+
             Janela.resultado.setText("3");
             Thread.sleep(delay);
-
             Janela.resultado.setText("2");
             Thread.sleep(delay);
-
             Janela.resultado.setText("1");
             Thread.sleep(delay);
 
-            Janela.resultado.setBounds(245, 285, 450, 75);
-=======
-            playerAzulx = 200;
-            playerAzuly = 200;
-
-            playerLaranjax = 425;
-            playerLaranjay = 425;
-
-            //Cliente.Janela.AtualizarTela();
-
-            Janela.resultado.setBounds(200, 275, 400, 75);
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 36));
-
-            Janela.resultado.setText("PARTIDA COMEÇANDO EM:");
-            Thread.sleep(delay);
-
-            Janela.resultado.setBounds(250, 275, 400, 75);
->>>>>>> f2461b62c4a63a9f6350170d775450af8510000e
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
-            Janela.resultado.setText("3...");
-            Thread.sleep(delay);
-
-            Janela.resultado.setText("2...");
-            Thread.sleep(delay);
-
-            Janela.resultado.setText("1...");
-            Thread.sleep(delay);
-
-            Janela.resultado.setText("LUTEM!");
+            Janela.resultado.setBounds(270, 285, 400, 75);
+            Janela.resultado.setText("Lutem!");
 
             Thread.sleep(delay);
             Janela.resultado.setVisible(false);
 
+            isMatchFinished = false; // Começo da partida
             habilitarEventos();
         }
         catch (Exception erro)
         { }
     }
 
-    public static void habilitarEventos()   { janela.ObterJanela().addKeyListener(kh); }
+    public static void habilitarEventos()   { janela.ObterJanela().addKeyListener(kh); System.out.println("aa"); }
 
-    public static void desabilitarEventos() { janela.ObterJanela().removeKeyListener(kh); }
+    public static void desabilitarEventos() { janela.ObterJanela().removeKeyListener(kh); System.out.println("bb"); }
 
     public static class ObterHost extends JFrame
     {
@@ -464,6 +449,7 @@ public class Cliente
     {
         static JLayeredPane fundo;
         static JLabel resultado = new JLabel("Aguardando players");
+        static JLabel time = new JLabel("Time: ");
 
         public Janela ObterJanela() {
             return Janela.this;
@@ -492,26 +478,27 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
 
-<<<<<<< HEAD
-            ImageIcon imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
-            player1 = new JLabel(imgPlayer1);
-            player1.setBounds(player1x, player1y, 92, 92);
-=======
             // imagens dos jogadores
             ImageIcon imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
             playerAzul = new JLabel(imgPlayer1);
-            playerAzul.setBounds(playerAzulx, playerAzuly, tamanho, tamanho);
->>>>>>> f2461b62c4a63a9f6350170d775450af8510000e
-
+            playerAzul.setBounds(IniPlayerAzulx, IniPlayerAzuly, tamanho, tamanho);
 
             ImageIcon imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
             playerLaranja = new JLabel(imgPlayer2);
-            playerLaranja.setBounds(playerLaranjax, playerLaranjay, tamanho, tamanho);
+            playerLaranja.setBounds(IniPlayerLaranjax, IniPlayerLaranjay, tamanho, tamanho);
+
+
+            time.setBounds(15, 600, 400, 40);
+            time.setFont(new Font("Monospace", Font.BOLD, 35));
+            time.setForeground(Color.LIGHT_GRAY);
+            time.setVisible(true);
+
 
             fundo = new JLayeredPane();
-            fundo.setSize(600, 600);
+            fundo.setSize(700, 700);
             fundo.add(titulo, 2);
             fundo.add(resultado,0);
+            fundo.add(time, -1);
             fundo.add(ringue, 2);
             fundo.add(playerAzul, 1);
             fundo.add(playerLaranja, 1);
@@ -543,16 +530,22 @@ public class Cliente
             else
             {
                 resultado.setForeground(Color.RED);
-                Cliente.Janela.MostrarMensagemDeErro("aaa");
                 resultado.setText("Perdeu!");
             }
-
-            desabilitarEventos();
             resultado.setVisible(true);
-            try {
+
+
+            System.out.println("-------1");
+            desabilitarEventos();
+            System.out.println("-------2");
+            try
+            {
+                System.out.println("-------3");
                 Thread.sleep(3000);
+                System.out.println("-------4");
                 servidor.receba(new ComunicadoDeInicio());
-            } catch (Exception e) {}
+                System.out.println("-------5");
+            } catch (Exception e) {e.printStackTrace();}
         }
 
         public static void AtualizarTela()
@@ -563,15 +556,14 @@ public class Cliente
             try
             {
                 if (playerAzulx <= 58 || playerAzulx >= 550 || playerAzuly >= 550 || playerAzuly <= 58) {
-                    servidor.receba(new ComunicadoDeVitoria('L', false)); isFinished = true; }
+                    servidor.receba(new ComunicadoDeVitoria('L', false)); }
 
                 if (playerLaranjax <= 58 || playerLaranjax >= 550 || playerLaranjay >= 550 || playerLaranjay <= 58) {
-                    servidor.receba(new ComunicadoDeVitoria('A', false)); isFinished = true; }
+                    servidor.receba(new ComunicadoDeVitoria('A', false)); }
+
+                isMatchFinished = true;
             }
-            catch (Exception erro)
-            {
-                MostrarMensagemDeErro(erro.getMessage());
-            }
+            catch (Exception erro) { MostrarMensagemDeErro(erro.getMessage()); }
         }
 
         public static void MostrarMensagemDeErro(String erroRecebido)
@@ -584,7 +576,7 @@ public class Cliente
             public void windowClosing(WindowEvent e) {
                 try
                 {
-                    if (!isFinished)
+                    if (!isMatchFinished)
                     {
                         if (playerControlante == 'A')
                             servidor.receba(new ComunicadoDeVitoria('L', true));
