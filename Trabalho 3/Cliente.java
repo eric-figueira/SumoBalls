@@ -18,22 +18,18 @@ public class Cliente
     private static final byte tamanho = 92;
 
     // Criacao dos jogadores
-    private static JLabel player1 = null;
-    private static JLabel player2 = null;
+    private static JLabel playerAzul = null;
+    private static JLabel playerLaranja = null;
 
 
     // Posicoes iniciais e direcao jogador 1
-    private static int player1x = 200;
-    private static int player1y = 200;
+    private static int playerAzulx = 200;
+    private static int playerAzuly = 200;
 
 
     // Posicoes iniciais e direcao jogador 2
-    private static int player2x = 425;
-    private static int player2y = 425;
-
-    // imagens dos jogadores
-    private static ImageIcon imgPlayer1 = null;
-
+    private static int playerLaranjax = 425;
+    private static int playerLaranjay = 425;
 
     // Quando os jogadores vao se mexer
     private static int ESCALA_MOVIMENTACAO = 20;
@@ -130,7 +126,7 @@ public class Cliente
         if (index == 0) { playerControlante = 'A'; direcaoPlayerControlante = 'N'; }
         else if (index == 1) {
             playerControlante = 'L'; direcaoPlayerControlante = 'S';
-            servidor.receba(new ComunicadoInicio());
+            servidor.receba(new ComunicadoDeInicio());
         }
         else
         {
@@ -145,23 +141,23 @@ public class Cliente
     {
         if (direcaoMovimento == 'N')
         {
-            if (playerMovimentante == 'A') player1y -= ESCALA_MOVIMENTACAO;
-            if (playerMovimentante == 'L') player2y -= ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'A') playerAzuly -= ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') playerLaranjay -= ESCALA_MOVIMENTACAO;
         }
         else if (direcaoMovimento == 'O')
         {
-            if (playerMovimentante == 'A') player1x -= ESCALA_MOVIMENTACAO;
-            if (playerMovimentante == 'L') player2x -= ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'A') playerAzulx -= ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') playerLaranjax -= ESCALA_MOVIMENTACAO;
         }
         else if (direcaoMovimento == 'S')
         {
-            if (playerMovimentante == 'A') player1y += ESCALA_MOVIMENTACAO;
-            if (playerMovimentante == 'L') player2y += ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'A') playerAzuly += ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') playerLaranjay += ESCALA_MOVIMENTACAO;
         }
         else if (direcaoMovimento == 'L')
         {
-            if (playerMovimentante == 'A') player1x += ESCALA_MOVIMENTACAO;
-            if (playerMovimentante == 'L') player2x += ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'A') playerAzulx += ESCALA_MOVIMENTACAO;
+            if (playerMovimentante == 'L') playerLaranjax += ESCALA_MOVIMENTACAO;
         }
 
         Janela.AtualizarTela();
@@ -176,14 +172,14 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'N';
-                player1y -= ESCALA_MOVIMENTACAO / 2;
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
+                playerAzuly -= ESCALA_MOVIMENTACAO / 2;
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'N';
-                player2y -= ESCALA_MOVIMENTACAO / 2;
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
+                playerLaranjay -= ESCALA_MOVIMENTACAO / 2;
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
         }
         else if (direcaoRotacao == 'S')
@@ -191,14 +187,14 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'S';
-                player1y += ESCALA_MOVIMENTACAO / 2;
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
+                playerAzuly += ESCALA_MOVIMENTACAO / 2;
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'S';
-                player2y += ESCALA_MOVIMENTACAO / 2;
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
+                playerLaranjay += ESCALA_MOVIMENTACAO / 2;
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
         }
         else if (direcaoRotacao == 'O')
@@ -206,14 +202,14 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'O';
-                player1x -= ESCALA_MOVIMENTACAO / 2;
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
+                playerAzulx -= ESCALA_MOVIMENTACAO / 2;
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'O';
-                player2x -= ESCALA_MOVIMENTACAO / 2;
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
+                playerLaranjax -= ESCALA_MOVIMENTACAO / 2;
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
         else if (direcaoRotacao == 'L')
@@ -221,14 +217,14 @@ public class Cliente
             if (playerRotante == 'A')
             {
                 dirPlayer1 = 'L';
-                player1x += ESCALA_MOVIMENTACAO / 2;
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
+                playerAzulx += ESCALA_MOVIMENTACAO / 2;
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (playerRotante == 'L')
             {
                 dirPlayer2 = 'L';
-                player2x += ESCALA_MOVIMENTACAO / 2;
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
+                playerLaranjax += ESCALA_MOVIMENTACAO / 2;
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
         }
 
@@ -248,33 +244,33 @@ public class Cliente
 
         if (direcaoAtaque == 'N')
         {
-            if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
+            if ((playerAzulx + tamanho/4) >= playerLaranjax && (playerAzulx + 3*tamanho/4) >= playerLaranjax)
             {
-                if (Math.abs(player2y - player1y) <= tamanho * 1.25)
+                if (Math.abs(playerLaranjay - playerAzuly) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'N');
             }
         }
         else if (direcaoAtaque == 'S')
         {
-            if ((player1x + tamanho/4) >= player2x && (player1x + 3*tamanho/4) >= player2x)
+            if ((playerAzulx + tamanho/4) >= playerLaranjax && (playerAzulx + 3*tamanho/4) >= playerLaranjax)
             {
-                if (Math.abs(player1y - player2y) <= tamanho * 1.25)
+                if (Math.abs(playerAzuly - playerLaranjay) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'S');
             }
         }
         else if (direcaoAtaque == 'L')
         {
-            if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
+            if ((playerAzuly + tamanho/4) >= playerLaranjay && (playerAzuly + 3*tamanho/4) >= playerLaranjay)
             {
-                if (Math.abs(player1x - player2x) <= tamanho * 1.25)
+                if (Math.abs(playerAzulx - playerLaranjax) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'L');
             }
         }
         else if (direcaoAtaque == 'O')
         {
-            if ((player1y + tamanho/4) >= player2y && (player1y + 3*tamanho/4) >= player2y)
+            if ((playerAzuly + tamanho/4) >= playerLaranjay && (playerAzuly + 3*tamanho/4) >= playerLaranjay)
             {
-                if (Math.abs(player2x - player1x) <= tamanho * 1.25)
+                if (Math.abs(playerLaranjax - playerAzulx) <= tamanho * 1.25)
                     realizarMovimentacao(playerAtacado, 'O');
             }
         }
@@ -295,54 +291,54 @@ public class Cliente
         {
             if (direcaoAtaque == 'N')
             {
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N_ataque.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N_ataque.png"))));
                 Thread.sleep(delay);
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S_ataque.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S_ataque.png"))));
                 Thread.sleep(delay);
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L_ataque.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L_ataque.png"))));
                 Thread.sleep(delay);
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O_ataque.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O_ataque.png"))));
                 Thread.sleep(delay);
-                player1.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
+                playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
         }
         else if (playerAtacante == 'L')
         {
             if (direcaoAtaque == 'N')
             {
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
                 Thread.sleep(delay);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S_ataque.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S_ataque.png"))));
                 Thread.sleep(delay);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L_ataque.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L_ataque.png"))));
                 Thread.sleep(delay);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O_ataque.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O_ataque.png"))));
                 Thread.sleep(delay);
-                player2.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
+                playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
     }
@@ -352,8 +348,22 @@ public class Cliente
         int delay = 1000;
         try
         {
-            Janela.resultado.setBounds(120, 275, 400, 75);
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 15));
+            playerAzulx = 200;
+            playerAzuly = 200;
+
+            playerLaranjax = 425;
+            playerLaranjay = 425;
+
+            //Cliente.Janela.AtualizarTela();
+
+            Janela.resultado.setBounds(200, 275, 400, 75);
+            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 36));
+
+            Janela.resultado.setText("PARTIDA COMEÇANDO EM:");
+            Thread.sleep(delay);
+
+            Janela.resultado.setBounds(250, 275, 400, 75);
+            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
             Janela.resultado.setText("3...");
             Thread.sleep(delay);
 
@@ -363,13 +373,10 @@ public class Cliente
             Janela.resultado.setText("1...");
             Thread.sleep(delay);
 
-            Janela.resultado.setBounds(245, 285, 450, 75);
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
-            Janela.resultado.setText("Lutem!");
+            Janela.resultado.setText("LUTEM!");
 
             Thread.sleep(delay);
             Janela.resultado.setVisible(false);
-            Thread.sleep(delay);
 
             habilitarEventos();
         }
@@ -463,22 +470,23 @@ public class Cliente
             ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
 
 
-            imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
-            player1 = new JLabel(imgPlayer1);
-            player1.setBounds(player1x, player1y, 92, 92);
+            // imagens dos jogadores
+            ImageIcon imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
+            playerAzul = new JLabel(imgPlayer1);
+            playerAzul.setBounds(playerAzulx, playerAzuly, tamanho, tamanho);
 
 
             ImageIcon imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
-            player2 = new JLabel(imgPlayer2);
-            player2.setBounds(player2x, player2y, 92, 92);
+            playerLaranja = new JLabel(imgPlayer2);
+            playerLaranja.setBounds(playerLaranjax, playerLaranjay, tamanho, tamanho);
 
             fundo = new JLayeredPane();
             fundo.setSize(600, 600);
             fundo.add(titulo, 2);
             fundo.add(resultado,0);
             fundo.add(ringue, 2);
-            fundo.add(player1, 1);
-            fundo.add(player2, 1);
+            fundo.add(playerAzul, 1);
+            fundo.add(playerLaranja, 1);
 
             Container cntForm = this.getContentPane();
             cntForm.add(fundo);
@@ -506,25 +514,30 @@ public class Cliente
             }
             else
             {
-                resultado.setText("Perdeu!");
                 resultado.setForeground(Color.RED);
+                Cliente.Janela.MostrarMensagemDeErro("aaa");
+                resultado.setText("Perdeu!");
             }
 
             desabilitarEventos();
             resultado.setVisible(true);
+            try {
+                Thread.sleep(3000);
+                servidor.receba(new ComunicadoDeInicio());
+            } catch (Exception e) {}
         }
 
         public static void AtualizarTela()
         {
-            player1.setBounds(player1x, player1y, 92, 92);
-            player2.setBounds(player2x, player2y, 92, 92);
+            playerAzul.setBounds(playerAzulx, playerAzuly, tamanho, tamanho);
+            playerLaranja.setBounds(playerLaranjax, playerLaranjay, tamanho, tamanho);
 
             try
             {
-                if (player1x <= 58 || player1x >= 550 || player1y >= 550 || player1y <= 58) {
+                if (playerAzulx <= 58 || playerAzulx >= 550 || playerAzuly >= 550 || playerAzuly <= 58) {
                     servidor.receba(new ComunicadoDeVitoria('L', false)); isFinished = true; }
 
-                if (player2x <= 58 || player2x >= 550 || player2y >= 550 || player2y <= 58) {
+                if (playerLaranjax <= 58 || playerLaranjax >= 550 || playerLaranjay >= 550 || playerLaranjay <= 58) {
                     servidor.receba(new ComunicadoDeVitoria('A', false)); isFinished = true; }
             }
             catch (Exception erro)

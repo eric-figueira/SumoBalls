@@ -96,9 +96,9 @@ public class SupervisoraDeConexao extends Thread
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(cv);
                 }
-                else if (comunicado instanceof ComunicadoInicio)
+                else if (comunicado instanceof ComunicadoDeInicio)
                 {
-                    ComunicadoInicio ci = (ComunicadoInicio) comunicado;
+                    ComunicadoDeInicio ci = (ComunicadoDeInicio) comunicado;
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(ci);
                 }
