@@ -94,8 +94,7 @@ public class Cliente
             tratadoraDeComunicadoDeDesligamento = new TratadoraDeComunicadoDeDesligamento(servidor);
             tratadoraJogador = new TratadoraJogador(servidor);
         }
-        catch (Exception erro) {
-        }
+        catch (Exception erro) { }
 
         tratadoraDeComunicadoDeDesligamento.start();
         tratadoraJogador.start();
@@ -128,7 +127,11 @@ public class Cliente
 
     public static void setPlayer(int index) throws Exception
     {
-        if (index == 0) { playerControlante = 'A'; direcaoPlayerControlante = 'N'; Janela.time.setText("Time: Azul"); }
+        if (index == 0) {
+            playerControlante = 'A';
+            direcaoPlayerControlante = 'N';
+            Janela.time.setText("Time: Azul");
+        }
         else if (index == 1) {
             playerControlante = 'L'; direcaoPlayerControlante = 'S';
             servidor.receba(new ComunicadoDeInicio());
@@ -385,6 +388,7 @@ public class Cliente
             Janela.resultado.setVisible(false);
 
             isMatchFinished = false; // Começo da partida
+            System.out.print("Antes do habilitarEventos()");
             habilitarEventos();
         }
         catch (Exception erro)
@@ -451,6 +455,9 @@ public class Cliente
         static JLabel resultado = new JLabel("Aguardando players");
         static JLabel time = new JLabel("Time: ");
 
+        static JLabel placarAzul = new JLabel("A: 0");
+        static JLabel placarLaranja = new JLabel("L: 0");
+
         public Janela ObterJanela() {
             return Janela.this;
         }
@@ -487,18 +494,28 @@ public class Cliente
             playerLaranja = new JLabel(imgPlayer2);
             playerLaranja.setBounds(IniPlayerLaranjax, IniPlayerLaranjay, tamanho, tamanho);
 
+            Font fonte = new Font("Monospace", Font.BOLD, 35);
 
             time.setBounds(15, 600, 400, 40);
-            time.setFont(new Font("Monospace", Font.BOLD, 35));
+            time.setFont(fonte);
             time.setForeground(Color.LIGHT_GRAY);
             time.setVisible(true);
 
+            placarAzul.setBounds(400, 600, 100, 40);
+            placarAzul.setFont(fonte);
+            placarAzul.setForeground(Color.BLUE);
+
+            placarLaranja.setBounds(500, 600, 100, 40);
+            placarLaranja.setFont(fonte);
+            placarLaranja.setForeground(Color.ORANGE);
 
             fundo = new JLayeredPane();
             fundo.setSize(700, 700);
             fundo.add(titulo, 2);
             fundo.add(resultado,0);
             fundo.add(time, -1);
+            fundo.add(placarAzul, -1);
+            fundo.add(placarLaranja, -1);
             fundo.add(ringue, 2);
             fundo.add(playerAzul, 1);
             fundo.add(playerLaranja, 1);
@@ -513,8 +530,20 @@ public class Cliente
             this.setResizable(false);
         }
 
+        static byte vezesVencidasAzul = 0;
+        static byte vezesVencidasLaranja = 0;
+
         public static void comunicarVitoria(char playerVencedor, boolean desistencia)
         {
+            if (playerVencedor == 'A') {
+                vezesVencidasAzul += 1;
+                Janela.placarAzul.setText("A: "+vezesVencidasAzul);
+            }
+            else {
+                vezesVencidasLaranja += 1;
+                Janela.placarLaranja.setText("L: "+vezesVencidasLaranja);
+            }
+
             if (playerVencedor == playerControlante)
             {
                 resultado.setForeground(Color.GREEN);
