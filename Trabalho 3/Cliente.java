@@ -46,7 +46,7 @@ public class Cliente
 
     static Janela janela = null;
 
-    static Cliente.Janela.keyHandler kh = new Janela.keyHandler();
+    private static Cliente.Janela.keyHandler kh;
 
 
     public static void main (String args[]) {
@@ -395,9 +395,18 @@ public class Cliente
         { }
     }
 
-    public static void habilitarEventos()   { janela.ObterJanela().addKeyListener(kh); System.out.println("aa"); }
+    public static void habilitarEventos()
+    {
+        kh = new Janela.keyHandler();
+        janela.ObterJanela().addKeyListener(kh);
+        System.out.println("aa");
+    }
 
-    public static void desabilitarEventos() { janela.ObterJanela().removeKeyListener(kh); System.out.println("bb"); }
+    public static void desabilitarEventos()
+    {
+        janela.ObterJanela().removeKeyListener(kh);
+        System.out.println("bb");
+    }
 
     public static class ObterHost extends JFrame
     {
@@ -584,11 +593,18 @@ public class Cliente
 
             try
             {
-                if (playerAzulx <= 58 || playerAzulx >= 550 || playerAzuly >= 550 || playerAzuly <= 58) {
-                    servidor.receba(new ComunicadoDeVitoria('L', false)); }
-
-                if (playerLaranjax <= 58 || playerLaranjax >= 550 || playerLaranjay >= 550 || playerLaranjay <= 58) {
-                    servidor.receba(new ComunicadoDeVitoria('A', false)); }
+                if (playerControlante == 'A')
+                {
+                    if (playerAzulx <= 58 || playerAzulx >= 550 || playerAzuly >= 550 || playerAzuly <= 58) {
+                        servidor.receba(new ComunicadoDeVitoria('L', false));
+                    }
+                }
+                else
+                {
+                    if (playerLaranjax <= 58 || playerLaranjax >= 550 || playerLaranjay >= 550 || playerLaranjay <= 58) {
+                        servidor.receba(new ComunicadoDeVitoria('A', false));
+                    }
+                }
 
                 isMatchFinished = true;
             }
