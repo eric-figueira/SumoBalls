@@ -345,6 +345,7 @@ public class Cliente
     public static void iniciar() throws Exception
     {
         int delay = 1000;
+        ESCALA_MOVIMENTACAO = 20;
         try
         {
             if (isMatchFinished) // Para nao fazermos uma reatribuicao com os mesmo valores
@@ -436,7 +437,7 @@ public class Cliente
             cntForm.add(botao, BorderLayout.SOUTH);
 
             this.addWindowListener(new ObterHost.FechamentoDeJanela());
-            this.setSize(400, 100);
+            this.setSize(275, 200);
             this.setVisible(true);
             this.setResizable(false);
         }
@@ -573,16 +574,16 @@ public class Cliente
             resultado.setVisible(true);
 
 
-            System.out.println("-------1");
+
             desabilitarEventos();
-            System.out.println("-------2");
             try
             {
-                System.out.println("-------3");
-                Thread.sleep(3000);
-                System.out.println("-------4");
-                servidor.receba(new ComunicadoDeInicio());
-                System.out.println("-------5");
+                Thread.sleep(1500);
+                resultado.setForeground(Color.DARK_GRAY);
+                resultado.setBounds(160, 275, 450, 75);
+                resultado.setFont(new Font("Monospace", Font.BOLD, 27));
+                resultado.setText("Uma nova partida se iniciará");
+                Thread.sleep(2000);
             } catch (Exception e) {e.printStackTrace();}
         }
 

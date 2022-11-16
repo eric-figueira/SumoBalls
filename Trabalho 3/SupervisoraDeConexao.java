@@ -93,12 +93,15 @@ public class SupervisoraDeConexao extends Thread
                 else if (comunicado instanceof  ComunicadoDeVitoria)
                 {
                     ComunicadoDeVitoria cv = (ComunicadoDeVitoria) comunicado;
-                    for (Parceiro parceiro : usuarios)
+                    ComunicadoDeInicio ci = new ComunicadoDeInicio();
+                    for (Parceiro parceiro : usuarios) {
                         parceiro.receba(cv);
+                        parceiro.receba(ci);
+                    }
                 }
-                else if (comunicado instanceof ComunicadoDeInicio)
+                else if (comunicado instanceof  ComunicadoDeInicio)
                 {
-                    ComunicadoDeInicio ci = (ComunicadoDeInicio) comunicado;
+                    ComunicadoDeInicio ci = new ComunicadoDeInicio();
                     for (Parceiro parceiro : usuarios)
                         parceiro.receba(ci);
                 }
@@ -110,7 +113,6 @@ public class SupervisoraDeConexao extends Thread
                         this.usuario.adeus();
                     }
                 }
-
             }
         }
         catch (Exception erro)
