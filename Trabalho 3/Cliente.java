@@ -576,15 +576,17 @@ public class Cliente
 
 
             desabilitarEventos();
-            try
-            {
-                Thread.sleep(1500);
-                resultado.setForeground(Color.DARK_GRAY);
-                resultado.setBounds(160, 275, 450, 75);
-                resultado.setFont(new Font("Monospace", Font.BOLD, 27));
-                resultado.setText("Uma nova partida se iniciará");
-                Thread.sleep(2000);
-            } catch (Exception e) {e.printStackTrace();}
+            if (!desistencia)
+                try {
+                    Thread.sleep(1500);
+                    resultado.setForeground(Color.DARK_GRAY);
+                    resultado.setBounds(160, 275, 450, 75);
+                    resultado.setFont(new Font("Monospace", Font.BOLD, 27));
+                    resultado.setText("Uma nova partida se iniciará");
+                    Thread.sleep(2000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         }
 
         public static void AtualizarTela()
