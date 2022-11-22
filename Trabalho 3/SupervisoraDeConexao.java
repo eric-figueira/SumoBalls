@@ -61,7 +61,13 @@ public class SupervisoraDeConexao extends Thread
         {
             synchronized (usuarios) 
             {
-                this.usuarios.add(usuario);
+                if (usuarios.size() < 2)
+                    usuarios.add(usuario);
+                else
+                {
+                    if (usuarios.get(0) == null) usuarios.add(0,usuario);
+                    if (usuarios.get(1) == null) usuarios.add(1,usuario);
+                }
                 this.usuario.receba(new SetadoraDeJogador(usuarios.indexOf(usuario)));
             }
 
@@ -110,7 +116,7 @@ public class SupervisoraDeConexao extends Thread
                 {
                     synchronized (usuarios) 
                     {
-                        usuarios.remove(usuario);
+                        usuarios.set(usuarios.indexOf(usuario), null);
                         this.usuario.adeus();
                     }
                 }

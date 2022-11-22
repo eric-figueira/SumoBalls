@@ -389,7 +389,6 @@ public class Cliente
             Janela.resultado.setVisible(false);
 
             isMatchFinished = false; // Começo da partida
-            System.out.print("Antes do habilitarEventos()");
             habilitarEventos();
         }
         catch (Exception erro)
@@ -400,13 +399,11 @@ public class Cliente
     {
         kh = new Janela.keyHandler();
         janela.ObterJanela().addKeyListener(kh);
-        System.out.println("aa");
     }
 
     public static void desabilitarEventos()
     {
         janela.ObterJanela().removeKeyListener(kh);
-        System.out.println("bb");
     }
 
     public static class ObterHost extends JFrame
