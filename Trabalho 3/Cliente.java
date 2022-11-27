@@ -88,15 +88,18 @@ public class Cliente
         }
 
         TratadoraDeComunicadoDeDesligamento tratadoraDeComunicadoDeDesligamento = null;
+        TratadoraDeComunicadoDeVitoria tratadoraDeComunicadoDeVitoria = null;
         TratadoraJogador tratadoraJogador = null;
 
         try {
             tratadoraDeComunicadoDeDesligamento = new TratadoraDeComunicadoDeDesligamento(servidor);
+            tratadoraDeComunicadoDeVitoria = new TratadoraDeComunicadoDeVitoria(servidor);
             tratadoraJogador = new TratadoraJogador(servidor);
         }
         catch (Exception erro) { }
 
         tratadoraDeComunicadoDeDesligamento.start();
+        tratadoraDeComunicadoDeVitoria.start();
         tratadoraJogador.start();
 
         janela = new Janela();
@@ -554,13 +557,13 @@ public class Cliente
             if (playerVencedor == playerControlante)
             {
                 resultado.setForeground(Color.GREEN);
-                if (desistencia)
-                {
-                    resultado.setText("Ganhou por desistência!");
-                    resultado.setBounds(160, 275, 450, 75);
-                    resultado.setFont(new Font("Monospace", Font.BOLD, 35));
-                }
-                else
+//                if (desistencia)
+//                {
+//                    resultado.setText("Ganhou por desistência!");
+//                    resultado.setBounds(160, 275, 450, 75);
+//                    resultado.setFont(new Font("Monospace", Font.BOLD, 35));
+//                }
+//                else
                     resultado.setText("Ganhou!");
             }
             else
