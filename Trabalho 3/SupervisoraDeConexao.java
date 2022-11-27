@@ -116,9 +116,9 @@ public class SupervisoraDeConexao extends Thread
                 {
                     synchronized (usuarios) 
                     {
-                        usuarios.set(usuarios.indexOf(usuario), null);
-                        this.usuario.adeus();
+                        usuarios.remove(usuario);
                     }
+                    this.usuario.adeus();
                 }
             }
         }
@@ -131,7 +131,8 @@ public class SupervisoraDeConexao extends Thread
             }
             catch (Exception err)
             {}
-            erro.printStackTrace();
+
+            return;
         }
     }
 }
