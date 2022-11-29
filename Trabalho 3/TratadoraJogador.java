@@ -28,15 +28,9 @@ public class TratadoraJogador extends Thread
                     Rotacao rotacao = (Rotacao) servidor.envie();
                     Cliente.realizarRotacao(rotacao.getPlayerRotante(), rotacao.getDirecaoDaRotacao());
                 }
-                else if (this.servidor.espie() instanceof SetadoraDeJogador)
-                {
+                else if (this.servidor.espie() instanceof SetadoraDeJogador) {
                     SetadoraDeJogador setPlayer = (SetadoraDeJogador) servidor.envie();
                     Cliente.setPlayer(setPlayer.getIndexJogador());
-                }
-                else if (this.servidor.espie() instanceof ComunicadoDeInicio)
-                {
-                    ComunicadoDeInicio ci = (ComunicadoDeInicio) servidor.envie();
-                    Cliente.iniciar();
                 }
             }
             catch (Exception erro)

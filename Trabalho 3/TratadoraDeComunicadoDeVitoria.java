@@ -29,6 +29,11 @@ public class TratadoraDeComunicadoDeVitoria extends Thread
                         Cliente.Janela.comunicarVitoria(((ComunicadoDeVitoria) c).getPlayerVencedor(), ((ComunicadoDeVitoria) c).getHouveDesistencia());
                     }
                 }
+                else if (this.servidor.espie() instanceof ComunicadoDeInicio)
+                {
+                    ComunicadoDeInicio ci = (ComunicadoDeInicio) servidor.envie();
+                    Cliente.iniciar();
+                }
             }
             catch (Exception erro)
             {}
