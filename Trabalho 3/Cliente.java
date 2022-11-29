@@ -90,17 +90,20 @@ public class Cliente
         TratadoraDeComunicadoDeDesligamento tratadoraDeComunicadoDeDesligamento = null;
         TratadoraDeComunicadoDeVitoria tratadoraDeComunicadoDeVitoria = null;
         TratadoraJogador tratadoraJogador = null;
+        TratadoraDeAtaque tratadoraDeAtaque = null;
 
         try {
             tratadoraDeComunicadoDeDesligamento = new TratadoraDeComunicadoDeDesligamento(servidor);
             tratadoraDeComunicadoDeVitoria = new TratadoraDeComunicadoDeVitoria(servidor);
             tratadoraJogador = new TratadoraJogador(servidor);
+            tratadoraDeAtaque = new TratadoraDeAtaque(servidor);
         }
         catch (Exception erro) { }
 
         tratadoraDeComunicadoDeDesligamento.start();
         tratadoraDeComunicadoDeVitoria.start();
         tratadoraJogador.start();
+        tratadoraDeAtaque.start();
 
         janela = new Janela();
         oh.getObterHost().dispose();
