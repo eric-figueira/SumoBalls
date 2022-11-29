@@ -25,6 +25,9 @@ public class TratadoraDeComunicadoDeVitoria extends Thread
                         Cliente.Janela.MostrarMensagemDeErro("O jogador se desconectou da partida!");
                         System.exit(0);
                     }
+                    else {
+                        Cliente.Janela.comunicarVitoria(((ComunicadoDeVitoria) c).getPlayerVencedor(), ((ComunicadoDeVitoria) c).getHouveDesistencia());
+                    }
                 }
             }
             catch (Exception erro)
