@@ -557,7 +557,14 @@ public class Cliente
             if (playerVencedor == playerControlante)
             {
                 resultado.setForeground(Color.GREEN);
-                resultado.setText("Ganhou!");
+//                if (desistencia)
+//                {
+//                    resultado.setText("Ganhou por desistência!");
+//                    resultado.setBounds(160, 275, 450, 75);
+//                    resultado.setFont(new Font("Monospace", Font.BOLD, 35));
+//                }
+//                else
+                    resultado.setText("Ganhou!");
             }
             else
             {
@@ -565,6 +572,7 @@ public class Cliente
                 resultado.setText("Perdeu!");
             }
             resultado.setVisible(true);
+
 
 
             desabilitarEventos();
@@ -592,14 +600,12 @@ public class Cliente
                 {
                     if (playerAzulx <= 58 || playerAzulx >= 550 || playerAzuly >= 550 || playerAzuly <= 58) {
                         servidor.receba(new ComunicadoDeVitoria('L', false));
-                        servidor.receba(new ComunicadoDeInicio());
                     }
                 }
                 else
                 {
                     if (playerLaranjax <= 58 || playerLaranjax >= 550 || playerLaranjay >= 550 || playerLaranjay <= 58) {
                         servidor.receba(new ComunicadoDeVitoria('A', false));
-                        servidor.receba(new ComunicadoDeInicio());
                     }
                 }
 
