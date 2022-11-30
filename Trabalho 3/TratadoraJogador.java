@@ -46,7 +46,7 @@ public class TratadoraJogador extends Thread
                 }
                 else if (this.servidor.espie() instanceof ComunicadoDeInicio)
                 {
-                    servidor.envie();
+                    ComunicadoDeInicio ci = (ComunicadoDeInicio) servidor.envie();
                     Cliente.iniciar();
                 }
             }
