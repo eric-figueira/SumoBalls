@@ -106,6 +106,212 @@ public class Cliente
         oh.getObterHost().dispose();
     }
 
+    public static class Janela extends JFrame
+    {
+        static JLayeredPane fundo;
+//        static JLabel resultado = new JLabel("");
+        static JLabel time = new JLabel("Time: ");
+
+        static JLabel placarAzul = new JLabel("A: 0");
+        static JLabel placarLaranja = new JLabel("L: 0");
+
+        public Janela ObterJanela() {
+            return Janela.this;
+        }
+
+        public Janela ()
+        {
+            super("SumoBalls");
+
+            this.setLayout(null);
+
+            JLabel titulo = new JLabel("SumoBalls");
+            titulo.setBounds(225, 30, 400, 50);
+            titulo.setForeground(Color.ORANGE);
+            titulo.setFont(new Font("Monospace", Font.BOLD, 50));
+
+
+//            resultado.setBounds(160, 275, 400, 75);
+//            resultado.setFont(new Font("Monospace", Font.BOLD, 40));
+//            resultado.setVisible(true);
+
+
+            JPanel ringue = new JPanel();
+            ringue.setBounds(150, 150, 400, 400);
+            ringue.setBackground(Color.LIGHT_GRAY);
+            ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
+
+
+            // imagens dos jogadores
+            ImageIcon imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
+            playerAzul = new JLabel(imgPlayer1);
+            playerAzul.setBounds(IniPlayerAzulx, IniPlayerAzuly, tamanho, tamanho);
+
+            ImageIcon imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
+            playerLaranja = new JLabel(imgPlayer2);
+            playerLaranja.setBounds(IniPlayerLaranjax, IniPlayerLaranjay, tamanho, tamanho);
+
+            Font fonte = new Font("Monospace", Font.BOLD, 35);
+
+            time.setBounds(15, 600, 400, 40);
+            time.setFont(fonte);
+            time.setForeground(Color.LIGHT_GRAY);
+            time.setVisible(true);
+
+            placarAzul.setBounds(400, 600, 100, 40);
+            placarAzul.setFont(fonte);
+            placarAzul.setForeground(Color.BLUE);
+
+            placarLaranja.setBounds(500, 600, 100, 40);
+            placarLaranja.setFont(fonte);
+            placarLaranja.setForeground(Color.ORANGE);
+
+            fundo = new JLayeredPane();
+            fundo.setSize(700, 700);
+            fundo.add(titulo, 2);
+//            fundo.add(resultado,0);
+            fundo.add(time, -1);
+            fundo.add(placarAzul, -1);
+            fundo.add(placarLaranja, -1);
+            fundo.add(ringue, 2);
+            fundo.add(playerAzul, 1);
+            fundo.add(playerLaranja, 1);
+
+            Container cntForm = this.getContentPane();
+            cntForm.add(fundo);
+            cntForm.setBackground(Color.DARK_GRAY);
+
+            this.addWindowListener(new FechamentoDeJanela());
+            this.setSize(700, 700);
+            this.setVisible(true);
+            this.setResizable(false);
+        }
+
+        static byte vezesVencidasAzul = 0;
+        static byte vezesVencidasLaranja = 0;
+
+        public static void comunicarVitoria(char playerVencedor, boolean desistencia)
+        {
+            if (playerVencedor == 'A') {
+                vezesVencidasAzul += 1;
+                Janela.placarAzul.setText("A: "+vezesVencidasAzul);
+            }
+            else {
+                vezesVencidasLaranja += 1;
+                Janela.placarLaranja.setText("L: "+vezesVencidasLaranja);
+            }
+
+//            if (playerVencedor == playerControlante)
+//            {
+//                resultado.setForeground(Color.GREEN);
+//                resultado.setText("Ganhou!");
+//            }
+//            else
+//            {
+//                resultado.setForeground(Color.RED);
+//                resultado.setText("Perdeu!");
+//            }
+//            resultado.setVisible(true);
+
+            desabilitarEventos();
+
+//            try {if (!desistencia)
+//                Thread.sleep(1500);
+//                resultado.setForeground(Color.DARK_GRAY);
+//                resultado.setBounds(160, 275, 450, 75);
+//                resultado.setFont(new Font("Monospace", Font.BOLD, 27));
+//                resultado.setText("Uma nova partida se iniciará");
+//                Thread.sleep(2000);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        }
+
+        public static void AtualizarTela()
+        {
+            playerAzul.setBounds(playerAzulx, playerAzuly, tamanho, tamanho);
+            playerLaranja.setBounds(playerLaranjax, playerLaranjay, tamanho, tamanho);
+
+            try
+            {
+                if (playerControlante == 'A')
+                {
+                    if (playerAzulx <= 58 || playerAzulx >= 550 || playerAzuly >= 550 || playerAzuly <= 58) {
+                        servidor.receba(new ComunicadoDeVitoria('L', false));
+                    }
+                }
+                else
+                {
+                    if (playerLaranjax <= 58 || playerLaranjax >= 550 || playerLaranjay >= 550 || playerLaranjay <= 58) {
+                        servidor.receba(new ComunicadoDeVitoria('A', false));
+                    }
+                }
+
+                isMatchFinished = true;
+            }
+            catch (Exception erro) { MostrarMensagemDeErro(erro.getMessage()); }
+        }
+
+        public static void MostrarMensagemDeErro(String erroRecebido)
+        {
+            JOptionPane.showMessageDialog(fundo, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+        static class FechamentoDeJanela extends WindowAdapter {
+            public void windowClosing(WindowEvent e) {
+                try
+                {
+                    if (playerControlante == 'A')
+                        servidor.receba(new ComunicadoDeVitoria('L', true));
+                    else
+                        servidor.receba(new ComunicadoDeVitoria('A', true));
+
+                    servidor.receba(new PedidoParaSair());
+                }
+                catch (Exception erro) {
+                    erro.printStackTrace();
+                }
+                System.exit(0);
+            }
+        }
+
+        static class keyHandler extends KeyAdapter  {
+            public void keyPressed(KeyEvent e) {
+                try
+                {
+                    if (e.getKeyCode() == KeyEvent.VK_W) {
+                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
+                            Cliente.mandarRotacao(playerControlante, 'N');
+                        else
+                            Cliente.mandarMovimentacao(playerControlante, 'N');
+                    } else if (e.getKeyCode() == KeyEvent.VK_A) {
+                        if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
+                            Cliente.mandarRotacao(playerControlante, 'O');
+                        else
+                            Cliente.mandarMovimentacao(playerControlante, 'O');
+                    } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                        if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
+                            Cliente.mandarRotacao(playerControlante, 'S');
+                        else
+                            Cliente.mandarMovimentacao(playerControlante, 'S');
+                    } else if (e.getKeyCode() == KeyEvent.VK_D) {
+                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'N')
+                            Cliente.mandarRotacao(playerControlante, 'L');
+                        else
+                            Cliente.mandarMovimentacao(playerControlante, 'L');
+                    } else if (e.getKeyCode() == KeyEvent.VK_L) {
+                        Cliente.mandarAtaque(playerControlante, direcaoPlayerControlante);
+                    }
+                }
+                catch (Exception erro)
+                {
+                    erro.printStackTrace();
+                }
+            }
+
+        }
+    }
 
     public static void mandarMovimentacao(char playerMovimentante, char direcaoMovimento)
     {
@@ -294,25 +500,25 @@ public class Cliente
             if (direcaoAtaque == 'N')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
         }
@@ -321,25 +527,25 @@ public class Cliente
             if (direcaoAtaque == 'N')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
@@ -368,28 +574,28 @@ public class Cliente
                 if (playerControlante == 'S') direcaoPlayerControlante = 'N';
             }
 
-            Janela.resultado.setBounds(175, 275, 400, 75);
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 35));
-            Janela.resultado.setForeground(Color.DARK_GRAY);
-
-            Janela.resultado.setText("Partida iniciando em:");
-            Thread.sleep(delay);
-
-            Janela.resultado.setBounds(340, 275, 400, 75);
-            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
-
-            Janela.resultado.setText("3");
-            Thread.sleep(delay);
-            Janela.resultado.setText("2");
-            Thread.sleep(delay);
-            Janela.resultado.setText("1");
-            Thread.sleep(delay);
-
-            Janela.resultado.setBounds(270, 285, 400, 75);
-            Janela.resultado.setText("Lutem!");
-
-            Thread.sleep(delay);
-            Janela.resultado.setVisible(false);
+//            Janela.resultado.setBounds(175, 275, 400, 75);
+//            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 35));
+//            Janela.resultado.setForeground(Color.DARK_GRAY);
+//
+//            Janela.resultado.setText("Partida iniciando em:");
+//            Thread.sleep(delay);
+//
+//            Janela.resultado.setBounds(340, 275, 400, 75);
+//            Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
+//
+//            Janela.resultado.setText("3");
+//            Thread.sleep(delay);
+//            Janela.resultado.setText("2");
+//            Thread.sleep(delay);
+//            Janela.resultado.setText("1");
+//            Thread.sleep(delay);
+//
+//            Janela.resultado.setBounds(270, 285, 400, 75);
+//            Janela.resultado.setText("Lutem!");
+//
+//            Thread.sleep(delay);
+//            Janela.resultado.setVisible(false);
 
             isMatchFinished = false; // Começo da partida
             habilitarEventos();
@@ -456,224 +662,6 @@ public class Cliente
         public static void MostrarMensagemDeErro(String erroRecebido)
         {
             JOptionPane.showMessageDialog (cntForm, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public static class Janela extends JFrame
-    {
-        static JLayeredPane fundo;
-        static JLabel resultado = new JLabel("Aguardando players");
-        static JLabel time = new JLabel("Time: ");
-
-        static JLabel placarAzul = new JLabel("A: 0");
-        static JLabel placarLaranja = new JLabel("L: 0");
-
-        public Janela ObterJanela() {
-            return Janela.this;
-        }
-
-        public Janela ()
-        {
-            super("SumoBalls");
-
-            this.setLayout(null);
-
-            JLabel titulo = new JLabel("SumoBalls");
-            titulo.setBounds(225, 30, 400, 50);
-            titulo.setForeground(Color.ORANGE);
-            titulo.setFont(new Font("Monospace", Font.BOLD, 50));
-
-
-            resultado.setBounds(160, 275, 400, 75);
-            resultado.setFont(new Font("Monospace", Font.BOLD, 40));
-            resultado.setVisible(true);
-
-
-            JPanel ringue = new JPanel();
-            ringue.setBounds(150, 150, 400, 400);
-            ringue.setBackground(Color.LIGHT_GRAY);
-            ringue.setBorder(BorderFactory.createLineBorder(Color.BLUE, 7));
-
-
-            // imagens dos jogadores
-            ImageIcon imgPlayer1 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_1_N.png")));
-            playerAzul = new JLabel(imgPlayer1);
-            playerAzul.setBounds(IniPlayerAzulx, IniPlayerAzuly, tamanho, tamanho);
-
-            ImageIcon imgPlayer2 = new ImageIcon(Objects.requireNonNull(getClass().getResource("Imagens/player_2_S.png")));
-            playerLaranja = new JLabel(imgPlayer2);
-            playerLaranja.setBounds(IniPlayerLaranjax, IniPlayerLaranjay, tamanho, tamanho);
-
-            Font fonte = new Font("Monospace", Font.BOLD, 35);
-
-            time.setBounds(15, 600, 400, 40);
-            time.setFont(fonte);
-            time.setForeground(Color.LIGHT_GRAY);
-            time.setVisible(true);
-
-            placarAzul.setBounds(400, 600, 100, 40);
-            placarAzul.setFont(fonte);
-            placarAzul.setForeground(Color.BLUE);
-
-            placarLaranja.setBounds(500, 600, 100, 40);
-            placarLaranja.setFont(fonte);
-            placarLaranja.setForeground(Color.ORANGE);
-
-            fundo = new JLayeredPane();
-            fundo.setSize(700, 700);
-            fundo.add(titulo, 2);
-            fundo.add(resultado,0);
-            fundo.add(time, -1);
-            fundo.add(placarAzul, -1);
-            fundo.add(placarLaranja, -1);
-            fundo.add(ringue, 2);
-            fundo.add(playerAzul, 1);
-            fundo.add(playerLaranja, 1);
-
-            Container cntForm = this.getContentPane();
-            cntForm.add(fundo);
-            cntForm.setBackground(Color.DARK_GRAY);
-
-            this.addWindowListener(new FechamentoDeJanela());
-            this.setSize(700, 700);
-            this.setVisible(true);
-            this.setResizable(false);
-        }
-
-        static byte vezesVencidasAzul = 0;
-        static byte vezesVencidasLaranja = 0;
-
-        public static void comunicarVitoria(char playerVencedor, boolean desistencia)
-        {
-            if (playerVencedor == 'A') {
-                vezesVencidasAzul += 1;
-                Janela.placarAzul.setText("A: "+vezesVencidasAzul);
-            }
-            else {
-                vezesVencidasLaranja += 1;
-                Janela.placarLaranja.setText("L: "+vezesVencidasLaranja);
-            }
-
-            if (playerVencedor == playerControlante)
-            {
-                resultado.setForeground(Color.GREEN);
-//                if (desistencia)
-//                {
-//                    resultado.setText("Ganhou por desistência!");
-//                    resultado.setBounds(160, 275, 450, 75);
-//                    resultado.setFont(new Font("Monospace", Font.BOLD, 35));
-//                }
-//                else
-                    resultado.setText("Ganhou!");
-            }
-            else
-            {
-                resultado.setForeground(Color.RED);
-                resultado.setText("Perdeu!");
-            }
-            resultado.setVisible(true);
-
-
-
-            desabilitarEventos();
-            if (!desistencia)
-                try {
-                    Thread.sleep(1500);
-                    resultado.setForeground(Color.DARK_GRAY);
-                    resultado.setBounds(160, 275, 450, 75);
-                    resultado.setFont(new Font("Monospace", Font.BOLD, 27));
-                    resultado.setText("Uma nova partida se iniciará");
-                    Thread.sleep(2000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-        }
-
-        public static void AtualizarTela()
-        {
-            playerAzul.setBounds(playerAzulx, playerAzuly, tamanho, tamanho);
-            playerLaranja.setBounds(playerLaranjax, playerLaranjay, tamanho, tamanho);
-
-            try
-            {
-                if (playerControlante == 'A')
-                {
-                    if (playerAzulx <= 58 || playerAzulx >= 550 || playerAzuly >= 550 || playerAzuly <= 58) {
-                        servidor.receba(new ComunicadoDeVitoria('L', false));
-                    }
-                }
-                else
-                {
-                    if (playerLaranjax <= 58 || playerLaranjax >= 550 || playerLaranjay >= 550 || playerLaranjay <= 58) {
-                        servidor.receba(new ComunicadoDeVitoria('A', false));
-                    }
-                }
-
-                isMatchFinished = true;
-            }
-            catch (Exception erro) { MostrarMensagemDeErro(erro.getMessage()); }
-        }
-
-        public static void MostrarMensagemDeErro(String erroRecebido)
-        {
-            JOptionPane.showMessageDialog(fundo, erroRecebido, "Um erro aconteceu", JOptionPane.ERROR_MESSAGE);
-        }
-
-
-        static class FechamentoDeJanela extends WindowAdapter {
-            public void windowClosing(WindowEvent e) {
-                try
-                {
-                    if (!isMatchFinished)
-                    {
-                        if (playerControlante == 'A')
-                            servidor.receba(new ComunicadoDeVitoria('L', true));
-                        else
-                            servidor.receba(new ComunicadoDeVitoria('A', true));
-                    }
-                    servidor.receba(new PedidoParaSair());
-                }
-                catch (Exception erro) {
-                    erro.printStackTrace();
-                }
-                System.exit(0);
-            }
-        }
-
-        static class keyHandler extends KeyAdapter  {
-            public void keyPressed(KeyEvent e) {
-                try
-                {
-                    if (e.getKeyCode() == KeyEvent.VK_W) {
-                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
-                            Cliente.mandarRotacao(playerControlante, 'N');
-                        else
-                            Cliente.mandarMovimentacao(playerControlante, 'N');
-                    } else if (e.getKeyCode() == KeyEvent.VK_A) {
-                        if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'L')
-                            Cliente.mandarRotacao(playerControlante, 'O');
-                        else
-                            Cliente.mandarMovimentacao(playerControlante, 'O');
-                    } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                        if (direcaoPlayerControlante == 'N' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'L')
-                            Cliente.mandarRotacao(playerControlante, 'S');
-                        else
-                            Cliente.mandarMovimentacao(playerControlante, 'S');
-                    } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                        if (direcaoPlayerControlante == 'S' || direcaoPlayerControlante == 'O' || direcaoPlayerControlante == 'N')
-                            Cliente.mandarRotacao(playerControlante, 'L');
-                        else
-                            Cliente.mandarMovimentacao(playerControlante, 'L');
-                    } else if (e.getKeyCode() == KeyEvent.VK_L) {
-                        Cliente.mandarAtaque(playerControlante, direcaoPlayerControlante);
-                    }
-                }
-                catch (Exception erro)
-                {
-                    erro.printStackTrace();
-                }
-            }
-
         }
     }
 }
