@@ -294,25 +294,25 @@ public class Cliente
             if (direcaoAtaque == 'N')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerAzul.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_1_O.png"))));
             }
         }
@@ -321,25 +321,25 @@ public class Cliente
             if (direcaoAtaque == 'N')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_N.png"))));
             }
             if (direcaoAtaque == 'S')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_S.png"))));
             }
             if (direcaoAtaque == 'L')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_L.png"))));
             }
             if (direcaoAtaque == 'O')
             {
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O_ataque.png"))));
-                Thread.sleep(delay);
+                //Thread.sleep(delay);
                 playerLaranja.setIcon(new ImageIcon(Objects.requireNonNull(Janela.class.getResource("Imagens/player_2_O.png"))));
             }
         }
@@ -373,22 +373,22 @@ public class Cliente
             Janela.resultado.setForeground(Color.DARK_GRAY);
 
             Janela.resultado.setText("Partida iniciando em:");
-            Thread.sleep(delay);
+            //Thread.sleep(delay);
 
             Janela.resultado.setBounds(340, 275, 400, 75);
             Janela.resultado.setFont(new Font("Monospace", Font.BOLD, 60));
 
             Janela.resultado.setText("3");
-            Thread.sleep(delay);
+            //Thread.sleep(delay);
             Janela.resultado.setText("2");
-            Thread.sleep(delay);
+            //Thread.sleep(delay);
             Janela.resultado.setText("1");
-            Thread.sleep(delay);
+            //Thread.sleep(delay);
 
             Janela.resultado.setBounds(270, 285, 400, 75);
             Janela.resultado.setText("Lutem!");
 
-            Thread.sleep(delay);
+            //Thread.sleep(delay);
             Janela.resultado.setVisible(false);
 
             isMatchFinished = false; // Começo da partida
