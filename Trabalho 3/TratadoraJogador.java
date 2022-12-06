@@ -19,33 +19,33 @@ public class TratadoraJogador extends Thread
         {
             try
             {
-                Comunicado c = this.servidor.espie();
-                if (c instanceof Movimentacao)
+                if (this.servidor.espie() instanceof Movimentacao)
                 {
                     Movimentacao movimento = (Movimentacao) servidor.envie ();
                     Cliente.realizarMovimentacao(movimento.getPlayerMovimentante(),movimento.getDirecaoDoMovimento());
                 }
-                else if (c instanceof Rotacao)
+                else if (this.servidor.espie() instanceof Rotacao)
                 {
                     Rotacao rotacao = (Rotacao) servidor.envie();
                     Cliente.realizarRotacao(rotacao.getPlayerRotante(),rotacao.getDirecaoDaRotacao());
                 }
-                else if (c instanceof Ataque)
+                else if (this.servidor.espie() instanceof Ataque)
                 {
                     Ataque ataque = (Ataque) servidor.envie();
                     Cliente.realizarAtaque(ataque.getPlayerAtacante(),ataque.getDirecaoDoAtaque());
                 }
-                else if (c instanceof ComunicadoDeVitoria)
+                else if (this.servidor.espie() instanceof ComunicadoDeVitoria)
                 {
                     ComunicadoDeVitoria cv = (ComunicadoDeVitoria) servidor.envie();
                     Cliente.Janela.comunicarVitoria(cv.getPlayerVencedor(), cv.getHouveDesistencia());
                 }
-                else if (c instanceof SetadoraDeJogador)
+                else if (this.servidor.espie() instanceof SetadoraDeJogador)
                 {
                     SetadoraDeJogador setPlayer = (SetadoraDeJogador) servidor.envie();
                     Cliente.setPlayer(setPlayer.getIndexJogador());
                 }
-                else if (c instanceof ComunicadoDeInicio) {
+                else if (this.servidor.espie() instanceof ComunicadoDeInicio)
+                {
                     ComunicadoDeInicio ci = (ComunicadoDeInicio) servidor.envie();
                     Cliente.iniciar();
                 }
